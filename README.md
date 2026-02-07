@@ -8,8 +8,6 @@
 
 Download documents from the Department of Justice's Epstein Files Transparency Act disclosure portal.
 
-(docs/images/interactive-menu.png)
-
 ## 🌟 Two Download Methods
 
 ### Method 1: CSV Downloader (RECOMMENDED) ⭐
