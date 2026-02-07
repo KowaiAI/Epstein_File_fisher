@@ -19,8 +19,8 @@ def test_csv_downloader_init():
     
     try:
         downloader = csv_downloader.CSVDownloader(csv_path, download_files=False)
-        assert downloader.csv_path.exists() or not downloader.csv_path.exists()  # Path object created
-        assert downloader.download_files == False
+        assert isinstance(downloader.csv_path, Path)
+        assert downloader.download_files is False
         assert downloader.output_dir is not None
         assert downloader.logs_dir is not None
         assert downloader.files_by_dataset == {}

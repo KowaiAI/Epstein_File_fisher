@@ -13,7 +13,7 @@ import scraper
 def test_scraper_init():
     """Test DOJEpsteinScraper initialization."""
     scraper_instance = scraper.DOJEpsteinScraper(download_files=False)
-    assert scraper_instance.download_files == False
+    assert scraper_instance.download_files is False
     assert scraper_instance.session is not None
     assert scraper_instance.output_dir is not None
     assert scraper_instance.logs_dir is not None
