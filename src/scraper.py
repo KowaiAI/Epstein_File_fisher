@@ -140,12 +140,7 @@ class DOJEpsteinScraper:
                     return None
 
     def get_data_set_urls(self) -> Dict[int, str]:
-        """
-        Get URLs for all data set pages.
-
-        Returns:
-            Dictionary mapping data set number to URL
-        """
+        """Get URLs for all data set pages."""
         self.logger.info(f"Fetching main page: {config.MAIN_PAGE_URL}")
         response = self._make_request(config.MAIN_PAGE_URL)
 
@@ -169,16 +164,19 @@ class DOJEpsteinScraper:
         return data_set_urls
 
     def get_pagination_info(self, soup: BeautifulSoup) -> int:
-        """
-        Extract total number of pages from pagination controls.
-
+        # Look for pagination nav
+        """Extract total number of pages from pagination controls.
+        
+        This function analyzes the pagination navigation in a BeautifulSoup object  to
+        determine the total number of pages available. It first checks for the
+        presence of a pagination nav element. If found, it retrieves all page links
+        and identifies the maximum page number by examining both the "Last" button  and
+        individual page numbers. The function returns the total number of pages  based
+        on the extracted information.
+        
         Args:
             soup: BeautifulSoup object of the page
-
-        Returns:
-            Total number of pages
         """
-        # Look for pagination nav
         pagination = soup.find("nav", {"aria-label": "Pagination"})
         if not pagination:
             return 1
@@ -203,15 +201,17 @@ class DOJEpsteinScraper:
         return max_page
 
     def extract_documents_from_page(self, soup: BeautifulSoup, data_set_num: int) -> List[Dict]:
-        """
-        Extract document information from a page.
-
+        """Extract document information from a page.
+        
+        This function retrieves document metadata from a given BeautifulSoup object
+        representing a web page. It identifies all file links, checks their extensions
+        against a set of supported types, and categorizes them accordingly. The
+        resulting metadata, including filename, URL, dataset number, file type, and
+        category, is collected into a list of dictionaries for further processing.
+        
         Args:
             soup: BeautifulSoup object of the page
             data_set_num: Data set number
-
-        Returns:
-            List of document metadata dictionaries
         """
         documents = []
 
@@ -255,15 +255,17 @@ class DOJEpsteinScraper:
         return documents
 
     def scrape_data_set(self, data_set_num: int, data_set_url: str) -> List[Dict]:
-        """
-        Scrape all documents from a data set.
-
+        """Scrape all documents from a data set.
+        
+        This function retrieves all documents from a specified data set by first
+        determining the total number of pages through a request to the data set  URL.
+        It then iterates through each page, extracting document metadata  using the
+        `extract_documents_from_page` method. The results are logged  for each page,
+        and a comprehensive list of all documents is returned  at the end.
+        
         Args:
-            data_set_num: Data set number
-            data_set_url: URL of the data set page
-
-        Returns:
-            List of all document metadata
+            data_set_num: Data set number.
+            data_set_url: URL of the data set page.
         """
         self.logger.info(f"Scraping Data Set {data_set_num}")
 
@@ -297,17 +299,21 @@ class DOJEpsteinScraper:
         return all_documents
 
     def download_file(self, doc: Dict, data_set_dir: Path) -> bool:
-        """
-        Download a file (any supported type).
-
-        Args:
-            doc: Document metadata dictionary
-            data_set_dir: Directory to save the file
-
-        Returns:
-            True if successful, False otherwise
-        """
         # Create category subdirectory
+        """Download a file (any supported type).
+        
+        This function creates a category subdirectory within the specified
+        data_set_dir to store the downloaded file. It checks if the file  already
+        exists to avoid redundant downloads. If not, it makes a  request to the
+        provided URL, streams the content, and saves it to  the designated path. The
+        function also logs the download progress  and updates the document metadata
+        with the file size.
+        
+        Args:
+            doc: Document metadata dictionary containing 'category',
+                'filename', and 'url'.
+            data_set_dir: Directory to save the file.
+        """
         category_dir = data_set_dir / doc["category"]
         category_dir.mkdir(exist_ok=True, parents=True)
 
@@ -348,7 +354,14 @@ class DOJEpsteinScraper:
             return False
 
     def run(self):
-        """Run the complete scraping process."""
+        """Run the complete scraping process.
+        
+        This method initiates the scraping process for the DOJ Epstein Disclosures.  It
+        retrieves all relevant data set URLs and iterates through the selected  data
+        sets, scraping metadata and downloading files if enabled. The function  also
+        logs the progress and any issues encountered during the process,  including
+        missing data sets and the types of files found.
+        """
         self.logger.info("Starting DOJ Epstein Disclosures scraper")
 
         # Get all data set URLs
@@ -483,7 +496,15 @@ def interactive_menu():
 
 
 def main():
-    """Main entry point."""
+    """Main entry point for scraping DOJ Epstein disclosure documents.
+    
+    This function sets up the command-line interface using argparse, allowing users
+    to specify options such as whether to download files, the output directory, and
+    specific data sets to scrape. It handles both interactive and non-interactive
+    modes for selecting data sets and confirms large downloads before proceeding.
+    The function then initializes the DOJEpsteinScraper with the specified options
+    and starts the scraping process.
+    """
     import argparse
 
     parser = argparse.ArgumentParser(
