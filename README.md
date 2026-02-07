@@ -6,7 +6,9 @@
 
 # File Fisher - DOJ Epstein Disclosures Downloader
 
-Download documents from the Department of Justice's Epstein Files Transparency Act disclosure portal.
+**Download documents from the Department of Justice's Epstein Files Transparency Act disclosure portal.**
+
+![Interactive Menu](docs/images/interactive-menu.png)
 
 ## 🌟 Two Download Methods
 
@@ -37,10 +39,6 @@ python src/csv_downloader.py
 ```
 
 ## 🎯 Interactive Menu
-
-When you run the program, you'll see a user-friendly menu:
-
-![Interactive Menu]
 
 The menu allows you to:
 - Select individual data sets (1-12)
