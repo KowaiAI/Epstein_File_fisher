@@ -70,6 +70,8 @@ The menu allows you to:
 - **[CSV Method](docs/CSV_METHOD.txt)** - Recommended download method
 - **[Interactive Menu](docs/INTERACTIVE_MENU.txt)** - Menu guide
 - **[Quick Reference](docs/QUICK_START.txt)** - All commands
+- **[Test Suite](tests/README.md)** - Testing documentation
+- **[Validation Report](VALIDATION_REPORT.md)** - Ship readiness validation
 
 ## 📁 Project Structure
 
@@ -79,6 +81,12 @@ Epstein_File_fisher/
 │   ├── csv_downloader.py   # CSV downloader (recommended)
 │   ├── scraper.py          # Web scraper
 │   └── config.py           # Settings
+├── tests/               # Test suite (21 tests)
+│   ├── test_config.py      # Config tests
+│   ├── test_csv_downloader.py  # CSV tests
+│   ├── test_scraper.py     # Scraper tests
+│   ├── test_integration.py # Integration tests
+│   └── run_tests.py        # Test runner
 ├── scripts/             # Setup scripts
 │   ├── setup.sh
 │   └── setup.bat
@@ -124,6 +132,30 @@ python src/csv_downloader.py /path/to/links.csv --data-sets 8
 # Metadata only
 python src/csv_downloader.py --no-download
 ```
+
+## 🧪 Testing
+
+The project includes a comprehensive test suite with 21 tests:
+
+```bash
+# Run all tests
+python3 tests/run_tests.py
+
+# Run individual test files
+python3 tests/test_config.py
+python3 tests/test_csv_downloader.py
+python3 tests/test_scraper.py
+python3 tests/test_integration.py
+```
+
+**Test Coverage:**
+- ✅ Configuration validation
+- ✅ CSV downloader functionality
+- ✅ Web scraper initialization
+- ✅ Error handling
+- ✅ End-to-end workflows
+
+See [tests/README.md](tests/README.md) for details.
 
 ## ⚠️ Legal Notice
 
