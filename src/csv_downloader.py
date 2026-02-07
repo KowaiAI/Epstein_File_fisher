@@ -84,7 +84,20 @@ class CSVDownloader:
         self.logger.info(f"Logging to {log_file}")
 
     def load_csv(self):
-        """Load CSV file and organize files by data set."""
+        """Load a CSV file and organize files by data set.
+        
+        This function reads a CSV file specified by `self.csv_path`, processes each row
+        to extract file information, and categorizes files based on their extensions.
+        It handles potential errors in row data and logs the number of files loaded
+        across different data sets. If the CSV file does not exist or an error occurs
+        during processing, appropriate error messages are logged.
+        
+        Args:
+            self: The instance of the class containing the method.
+        
+        Returns:
+            bool: True if the CSV was loaded successfully, False otherwise.
+        """
         self.logger.info(f"Loading CSV: {self.csv_path}")
 
         if not self.csv_path.exists():
@@ -184,7 +197,16 @@ class CSVDownloader:
             return False
 
     def download_data_sets(self, data_set_numbers: List[int]):
-        """Download selected data sets."""
+        """def download_data_sets(self, data_set_numbers: List[int]):
+        Download selected data sets.  This function iterates over the provided
+        data_set_numbers, checking if each  data set exists in self.files_by_dataset.
+        If a data set is found, it logs  the download process and either collects
+        metadata or downloads the files  to a specified directory. The function also
+        handles the creation of  necessary directories and logs the success of each
+        download operation.
+        
+        Args:
+            data_set_numbers (List[int]): A list of integers representing the"""
         for ds_num in sorted(data_set_numbers):
             if ds_num not in self.files_by_dataset:
                 self.logger.warning(f"Data Set {ds_num} not found in CSV")
@@ -211,7 +233,7 @@ class CSVDownloader:
             self.metadata[f"data_set_{ds_num}"] = files
 
     def save_metadata(self):
-        """Save metadata to JSON."""
+        """Save metadata to a JSON file and log the total files processed."""
         metadata_path = self.output_dir / config.METADATA_FILE
 
         with open(metadata_path, 'w') as f:
@@ -224,7 +246,21 @@ class CSVDownloader:
 
 
 def interactive_menu(available_datasets: List[int]):
-    """Interactive menu for selecting data sets."""
+    """Display an interactive menu for selecting data sets.
+    
+    This function presents a user-friendly interface for users to choose from
+    available data sets. It handles user input, allowing for single or multiple
+    selections, and provides options to download all data sets or exit. The
+    function also includes error handling for invalid inputs and cancellation via
+    keyboard interrupt.
+    
+    Args:
+        available_datasets (List[int]): A list of integers representing available data set numbers.
+    
+    Returns:
+        List[int] or None: A list of selected data set numbers if any are chosen, or
+            None if the user exits.
+    """
     print("\n" + "="*70)
     print("░▒█▀▀▀░░▀░░█░░█▀▀░░░▒█▀▀▀░░▀░░█▀▀░█░░░░█▀▀░█▀▀▄")
     print("░▒█▀▀░░░█▀░█░░█▀▀░░░▒█▀▀░░░█▀░▀▀▄░█▀▀█░█▀▀░█▄▄▀")
@@ -283,7 +319,14 @@ def interactive_menu(available_datasets: List[int]):
 
 
 def main():
-    """Main entry point."""
+    """Main entry point for downloading DOJ Epstein files.
+    
+    This function sets up the command-line interface using argparse to handle user
+    inputs for downloading files from a specified CSV. It allows the user to
+    specify the CSV file path, output directory, and specific data sets to
+    download. The function also manages the download process and metadata saving,
+    providing feedback on the operation's success or failure.
+    """
     import argparse
 
     parser = argparse.ArgumentParser(
