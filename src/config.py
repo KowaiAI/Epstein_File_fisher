@@ -16,7 +16,7 @@ USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTM
 # Output settings (cross-platform defaults)
 from pathlib import Path as _Path
 OUTPUT_DIR = _Path.home() / "Documents" / "Epstein"  # ~/Documents/Epstein on all platforms
-LOGS_DIR = "logs"
+LOGS_DIR = _Path.cwd() / "logs"  # logs directory in current working directory
 METADATA_FILE = "metadata.json"
 DOWNLOAD_FILES = True  # Set to False to only collect metadata
 

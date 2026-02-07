@@ -92,9 +92,6 @@ class CSVDownloader:
         across different data sets. If the CSV file does not exist or an error occurs
         during processing, appropriate error messages are logged.
         
-        Args:
-            self: The instance of the class containing the method.
-        
         Returns:
             bool: True if the CSV was loaded successfully, False otherwise.
         """
@@ -105,8 +102,14 @@ class CSVDownloader:
             return False
 
         try:
-            with open(self.csv_path, 'r') as f:
+            with open(self.csv_path, 'r', encoding='utf-8') as f:
                 reader = csv.DictReader(f)
+                
+                # Validate CSV has required columns
+                required_columns = {'data_set', 'url', 'link_text'}
+                if reader.fieldnames and not required_columns.issubset(set(reader.fieldnames)):
+                    self.logger.error(f"CSV missing required columns. Expected: {required_columns}, Found: {reader.fieldnames}")
+                    return False
 
                 for row in reader:
                     try:
@@ -142,7 +145,7 @@ class CSVDownloader:
 
                         self.files_by_dataset[data_set].append(file_info)
 
-                    except (KeyError, ValueError) as e:
+                    except (KeyError, ValueError, TypeError) as e:
                         self.logger.warning(f"Skipping invalid row: {e}")
                         continue
 
@@ -175,7 +178,7 @@ class CSVDownloader:
         # Download
         try:
             time.sleep(config.RATE_LIMIT_DELAY)
-            response = self.session.get(file_info['url'], timeout=30, stream=True)
+            response = self.session.get(file_info['url'], timeout=config.REQUEST_TIMEOUT, stream=True)
             response.raise_for_status()
 
             with open(file_path, 'wb') as f:
@@ -197,16 +200,17 @@ class CSVDownloader:
             return False
 
     def download_data_sets(self, data_set_numbers: List[int]):
-        """def download_data_sets(self, data_set_numbers: List[int]):
-        Download selected data sets.  This function iterates over the provided
-        data_set_numbers, checking if each  data set exists in self.files_by_dataset.
-        If a data set is found, it logs  the download process and either collects
-        metadata or downloads the files  to a specified directory. The function also
-        handles the creation of  necessary directories and logs the success of each
-        download operation.
+        """Download selected data sets.
+        
+        This function iterates over the provided data_set_numbers, checking if each
+        data set exists in self.files_by_dataset. If a data set is found, it logs
+        the download process and either collects metadata or downloads the files
+        to a specified directory. The function also handles the creation of
+        necessary directories and logs the success of each download operation.
         
         Args:
-            data_set_numbers (List[int]): A list of integers representing the"""
+            data_set_numbers: A list of integers representing the data set numbers to download.
+        """
         for ds_num in sorted(data_set_numbers):
             if ds_num not in self.files_by_dataset:
                 self.logger.warning(f"Data Set {ds_num} not found in CSV")
@@ -236,13 +240,16 @@ class CSVDownloader:
         """Save metadata to a JSON file and log the total files processed."""
         metadata_path = self.output_dir / config.METADATA_FILE
 
-        with open(metadata_path, 'w') as f:
-            json.dump(self.metadata, f, indent=2)
+        try:
+            with open(metadata_path, 'w', encoding='utf-8') as f:
+                json.dump(self.metadata, f, indent=2)
 
-        self.logger.info(f"Metadata saved to {metadata_path}")
+            self.logger.info(f"Metadata saved to {metadata_path}")
 
-        total_files = sum(len(files) for files in self.metadata.values())
-        self.logger.info(f"Total files processed: {total_files}")
+            total_files = sum(len(files) for files in self.metadata.values())
+            self.logger.info(f"Total files processed: {total_files}")
+        except (IOError, OSError) as e:
+            self.logger.error(f"Failed to save metadata to {metadata_path}: {e}")
 
 
 def interactive_menu(available_datasets: List[int]):
@@ -335,7 +342,7 @@ def main():
     parser.add_argument(
         "csv_file",
         nargs="?",
-        default="/home/hibiscus/Downloads/master_file_links.csv",
+        default=str(Path.home() / "Downloads" / "master_file_links.csv"),
         help="Path to CSV file with download links"
     )
     parser.add_argument(
@@ -357,12 +364,15 @@ def main():
 
     args = parser.parse_args()
 
-    # Override output dir if specified
-    if args.output_dir:
-        config.OUTPUT_DIR = Path(args.output_dir)
+    # Override output dir if specified (use local variable to avoid mutating config)
+    output_dir = Path(args.output_dir) if args.output_dir else config.OUTPUT_DIR
 
     # Create downloader
     downloader = CSVDownloader(args.csv_file, download_files=not args.no_download)
+    
+    # Override output directory if specified
+    if args.output_dir:
+        downloader.output_dir = output_dir
 
     # Load CSV
     if not downloader.load_csv():
@@ -385,7 +395,7 @@ def main():
     print(f"\n{'='*70}")
     print(f"Download Configuration:")
     print(f"  Data Sets: {selected}")
-    print(f"  Output Directory: {config.OUTPUT_DIR}")
+    print(f"  Output Directory: {downloader.output_dir}")
     print(f"  Download Files: {not args.no_download}")
     print(f"{'='*70}\n")
 
