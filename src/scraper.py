@@ -164,19 +164,22 @@ class DOJEpsteinScraper:
         return data_set_urls
 
     def get_pagination_info(self, soup: BeautifulSoup) -> int:
-        # Look for pagination nav
         """Extract total number of pages from pagination controls.
         
-        This function analyzes the pagination navigation in a BeautifulSoup object  to
+        This function analyzes the pagination navigation in a BeautifulSoup object to
         determine the total number of pages available. It first checks for the
         presence of a pagination nav element. If found, it retrieves all page links
-        and identifies the maximum page number by examining both the "Last" button  and
-        individual page numbers. The function returns the total number of pages  based
+        and identifies the maximum page number by examining both the "Last" button and
+        individual page numbers. The function returns the total number of pages based
         on the extracted information.
         
         Args:
             soup: BeautifulSoup object of the page
+            
+        Returns:
+            int: Total number of pages (1 if no pagination found)
         """
+        # Look for pagination nav
         pagination = soup.find("nav", {"aria-label": "Pagination"})
         if not pagination:
             return 1
@@ -191,7 +194,8 @@ class DOJEpsteinScraper:
                 href = link.get("href", "")
                 match = re.search(r"[?&]page=(\d+)", href)
                 if match:
-                    return int(match.group(1)) + 1  # Pages are 0-indexed
+                    # Return page number + 1 (pages in URL are 0-indexed, but we count from 1)
+                    return int(match.group(1)) + 1
 
             # Check for page numbers
             text = link.get_text().strip()
@@ -212,6 +216,9 @@ class DOJEpsteinScraper:
         Args:
             soup: BeautifulSoup object of the page
             data_set_num: Data set number
+            
+        Returns:
+            List[Dict]: List of document metadata dictionaries
         """
         documents = []
 
@@ -226,7 +233,18 @@ class DOJEpsteinScraper:
             # Check if it's a supported file type with EFTA pattern
             if file_ext in config.SUPPORTED_EXTENSIONS and re.search(config.FILENAME_PATTERN, href, re.IGNORECASE):
                 filename = Path(parsed_path).name
-                full_url = urljoin(config.BASE_URL, href)
+                
+                # Validate and construct full URL
+                try:
+                    full_url = urljoin(config.BASE_URL, href)
+                    # Basic URL validation
+                    parsed_url = urlparse(full_url)
+                    if not parsed_url.scheme or not parsed_url.netloc:
+                        self.logger.warning(f"Invalid URL constructed: {full_url}")
+                        continue
+                except Exception as e:
+                    self.logger.warning(f"Failed to construct URL from {href}: {e}")
+                    continue
 
                 # Determine file category
                 if file_ext in ['.pdf', '.doc', '.docx', '.txt', '.rtf']:
@@ -258,14 +276,17 @@ class DOJEpsteinScraper:
         """Scrape all documents from a data set.
         
         This function retrieves all documents from a specified data set by first
-        determining the total number of pages through a request to the data set  URL.
-        It then iterates through each page, extracting document metadata  using the
-        `extract_documents_from_page` method. The results are logged  for each page,
-        and a comprehensive list of all documents is returned  at the end.
+        determining the total number of pages through a request to the data set URL.
+        It then iterates through each page, extracting document metadata using the
+        `extract_documents_from_page` method. The results are logged for each page,
+        and a comprehensive list of all documents is returned at the end.
         
         Args:
             data_set_num: Data set number.
             data_set_url: URL of the data set page.
+            
+        Returns:
+            List[Dict]: List of all document metadata from the data set
         """
         self.logger.info(f"Scraping Data Set {data_set_num}")
 
@@ -299,21 +320,24 @@ class DOJEpsteinScraper:
         return all_documents
 
     def download_file(self, doc: Dict, data_set_dir: Path) -> bool:
-        # Create category subdirectory
         """Download a file (any supported type).
         
         This function creates a category subdirectory within the specified
-        data_set_dir to store the downloaded file. It checks if the file  already
-        exists to avoid redundant downloads. If not, it makes a  request to the
-        provided URL, streams the content, and saves it to  the designated path. The
-        function also logs the download progress  and updates the document metadata
+        data_set_dir to store the downloaded file. It checks if the file already
+        exists to avoid redundant downloads. If not, it makes a request to the
+        provided URL, streams the content, and saves it to the designated path. The
+        function also logs the download progress and updates the document metadata
         with the file size.
         
         Args:
             doc: Document metadata dictionary containing 'category',
                 'filename', and 'url'.
             data_set_dir: Directory to save the file.
+            
+        Returns:
+            bool: True if download was successful, False otherwise.
         """
+        # Create category subdirectory
         category_dir = data_set_dir / doc["category"]
         category_dir.mkdir(exist_ok=True, parents=True)
 
@@ -326,11 +350,16 @@ class DOJEpsteinScraper:
 
         response = self._make_request(doc["url"], stream=True)
         if not response:
+            self.logger.error(f"Failed to download {doc['filename']}: request failed")
             return False
 
         try:
-            # Get file size if available
-            total_size = int(response.headers.get('content-length', 0))
+            # Get file size if available (validate header value)
+            try:
+                total_size = int(response.headers.get('content-length', 0))
+            except (ValueError, TypeError):
+                total_size = 0
+                self.logger.debug(f"Could not parse content-length header for {doc['filename']}")
 
             with open(file_path, "wb") as f:
                 for chunk in response.iter_content(chunk_size=8192):
@@ -356,10 +385,10 @@ class DOJEpsteinScraper:
     def run(self):
         """Run the complete scraping process.
         
-        This method initiates the scraping process for the DOJ Epstein Disclosures.  It
-        retrieves all relevant data set URLs and iterates through the selected  data
-        sets, scraping metadata and downloading files if enabled. The function  also
-        logs the progress and any issues encountered during the process,  including
+        This method initiates the scraping process for the DOJ Epstein Disclosures. It
+        retrieves all relevant data set URLs and iterates through the selected data
+        sets, scraping metadata and downloading files if enabled. The function also
+        logs the progress and any issues encountered during the process, including
         missing data sets and the types of files found.
         """
         self.logger.info("Starting DOJ Epstein Disclosures scraper")
@@ -367,7 +396,7 @@ class DOJEpsteinScraper:
         # Get all data set URLs
         data_set_urls = self.get_data_set_urls()
         if not data_set_urls:
-            self.logger.error("No data sets found. Exiting.")
+            self.logger.error("No data sets found or failed to retrieve data set URLs. Exiting.")
             return
 
         # Scrape only the selected data sets
@@ -414,14 +443,17 @@ class DOJEpsteinScraper:
         """Save collected metadata to JSON file."""
         metadata_path = self.output_dir / config.METADATA_FILE
 
-        with open(metadata_path, "w") as f:
-            json.dump(self.metadata, f, indent=2)
+        try:
+            with open(metadata_path, "w", encoding='utf-8') as f:
+                json.dump(self.metadata, f, indent=2)
 
-        self.logger.info(f"Metadata saved to {metadata_path}")
+            self.logger.info(f"Metadata saved to {metadata_path}")
 
-        # Print summary
-        total_docs = sum(len(docs) for docs in self.metadata.values())
-        self.logger.info(f"Total documents found: {total_docs}")
+            # Print summary
+            total_docs = sum(len(docs) for docs in self.metadata.values())
+            self.logger.info(f"Total documents found: {total_docs}")
+        except (IOError, OSError) as e:
+            self.logger.error(f"Failed to save metadata to {metadata_path}: {e}")
 
 
 def interactive_menu():
@@ -534,33 +566,33 @@ def main():
 
     args = parser.parse_args()
 
-    # Override output directory if specified
-    if args.output_dir:
-        config.OUTPUT_DIR = Path(args.output_dir)
+    # Override output directory if specified (use local variable to avoid mutating config)
+    output_dir = Path(args.output_dir) if args.output_dir else config.OUTPUT_DIR
 
     # Determine which data sets to download
+    data_sets_to_scrape = []
     if args.data_sets:
         # Command line arguments provided
-        config.DATA_SETS = args.data_sets
+        data_sets_to_scrape = args.data_sets
     elif args.interactive or (not args.data_sets and sys.stdin.isatty()):
         # Interactive mode (default when run without arguments)
         selected_sets = interactive_menu()
         if selected_sets is None:
             return  # User cancelled
-        config.DATA_SETS = selected_sets
+        data_sets_to_scrape = selected_sets
     else:
         # Non-interactive (all sets) - for scripts/automation
-        config.DATA_SETS = list(range(1, 13))
+        data_sets_to_scrape = list(range(1, 13))
 
     print(f"\n{'='*70}")
     print(f"Download Configuration:")
-    print(f"  Data Sets: {config.DATA_SETS}")
-    print(f"  Output Directory: {config.OUTPUT_DIR}")
+    print(f"  Data Sets: {data_sets_to_scrape}")
+    print(f"  Output Directory: {output_dir}")
     print(f"  Download Files: {not args.no_download}")
     print(f"{'='*70}\n")
 
     # Final confirmation for large downloads
-    if len(config.DATA_SETS) > 3 and not args.no_download:
+    if len(data_sets_to_scrape) > 3 and not args.no_download:
         try:
             confirm = input("⚠️  You're about to download multiple data sets. Continue? (yes/no): ").strip().lower()
             if confirm not in ['yes', 'y']:
@@ -571,6 +603,13 @@ def main():
             return
 
     scraper = DOJEpsteinScraper(download_files=not args.no_download)
+    
+    # Set output directory
+    scraper.output_dir = output_dir
+    
+    # Set data sets to scrape (required for backward compatibility as scraper.run() reads from config.DATA_SETS)
+    config.DATA_SETS = data_sets_to_scrape
+    
     scraper.run()
 
 
