@@ -604,12 +604,10 @@ def main():
 
     scraper = DOJEpsteinScraper(download_files=not args.no_download)
     
-    # Override output directory if specified
-    if args.output_dir:
-        scraper.output_dir = output_dir
+    # Set output directory
+    scraper.output_dir = output_dir
     
-    # Set data sets to scrape by directly using the local variable
-    # Store in config for backward compatibility with scraper.run() 
+    # Set data sets to scrape (required for backward compatibility as scraper.run() reads from config.DATA_SETS)
     config.DATA_SETS = data_sets_to_scrape
     
     scraper.run()

@@ -370,9 +370,8 @@ def main():
     # Create downloader
     downloader = CSVDownloader(args.csv_file, download_files=not args.no_download)
     
-    # Override output directory if specified
-    if args.output_dir:
-        downloader.output_dir = output_dir
+    # Set output directory
+    downloader.output_dir = output_dir
 
     # Load CSV
     if not downloader.load_csv():
