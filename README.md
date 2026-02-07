@@ -113,6 +113,5 @@ These are public records from the U.S. Department of Justice. Use responsibly fo
 
 ---
 
-**Repository**: https://github.com/KowaiAI/Epstein_File_fisher
+I deff used AI for this. :)
 
-Co-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>
