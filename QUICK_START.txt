@@ -1,0 +1,167 @@
+░▒█▀▀▀░░▀░░█░░█▀▀░░░▒█▀▀▀░░▀░░█▀▀░█░░░░█▀▀░█▀▀▄
+░▒█▀▀░░░█▀░█░░█▀▀░░░▒█▀▀░░░█▀░▀▀▄░█▀▀█░█▀▀░█▄▄▀
+░▒█░░░░▀▀▀░▀▀░▀▀▀░░░▒█░░░░▀▀▀░▀▀▀░▀░░▀░▀▀▀░▀░▀▀
+
+╔═══════════════════════════════════════════════════════════════╗
+║         DOJ EPSTEIN FILES SCRAPER - QUICK START              ║
+║                   (5-Minute Setup)                            ║
+╚═══════════════════════════════════════════════════════════════╝
+
+📖 FULL BEGINNER'S GUIDE: See BEGINNER_GUIDE.md for detailed help
+
+═══════════════════════════════════════════════════════════════
+
+WINDOWS USERS:
+══════════════
+
+1. Install Python from python.org
+   ⚠️ CHECK "Add Python to PATH" during install!
+
+2. Open Command Prompt (type "cmd" in Start menu)
+
+3. Type these commands (press Enter after each):
+
+   cd Documents
+   mkdir Epstein-Scraper
+   cd Epstein-Scraper
+
+   [Copy scraper files here, then continue...]
+
+   python -m venv venv
+   venv\Scripts\activate
+   pip install -r requirements.txt
+   python scraper.py --data-sets 1
+
+═══════════════════════════════════════════════════════════════
+
+MAC USERS:
+══════════
+
+1. Open Terminal (Command + Space, type "terminal")
+
+2. Type these commands (press Enter after each):
+
+   cd Documents
+   mkdir Epstein-Scraper
+   cd Epstein-Scraper
+
+   [Copy scraper files here, then continue...]
+
+   python3 -m venv venv
+   source venv/bin/activate
+   pip install -r requirements.txt
+   python scraper.py --data-sets 1
+
+═══════════════════════════════════════════════════════════════
+
+LINUX USERS:
+════════════
+
+1. Open Terminal (Ctrl + Alt + T)
+
+2. Type these commands (press Enter after each):
+
+   cd ~/Documents
+   mkdir Epstein-Scraper
+   cd Epstein-Scraper
+
+   [Copy scraper files here, then continue...]
+
+   python3 -m venv venv
+   source venv/bin/activate
+   pip install -r requirements.txt
+   python scraper.py --data-sets 1
+
+═══════════════════════════════════════════════════════════════
+
+WHAT IT DOES:
+═════════════
+
+✓ Downloads files from justice.gov/epstein/doj-disclosures
+✓ Organizes by data set (1-12) and file type
+✓ Saves to: ~/Documents/Epstein/ (or C:\Users\You\Documents\Epstein)
+✓ Can resume if interrupted
+✓ Shows progress bars
+
+═══════════════════════════════════════════════════════════════
+
+FILE TYPES DOWNLOADED:
+═══════════════════════
+
+📄 Documents: PDF, DOC, DOCX, TXT
+🎥 Videos: MP4, MOV, AVI
+🎵 Audio: MP3, WAV, M4A
+🖼️ Images: JPG, PNG, GIF
+📦 Archives: ZIP, RAR
+
+═══════════════════════════════════════════════════════════════
+
+IMPORTANT NOTES:
+════════════════
+
+⚠️ Need 150GB free disk space for full download
+⏱️ Takes 2-6 hours for all files
+💾 --data-sets 1 downloads ~3,000 files (good for testing)
+💾 No flag downloads all ~38,000 files
+
+═══════════════════════════════════════════════════════════════
+
+COMMON COMMANDS:
+════════════════
+
+Test with one data set:
+  python scraper.py --data-sets 1
+
+Download everything:
+  python scraper.py
+
+Download specific sets:
+  python scraper.py --data-sets 1 2 3
+
+Just get metadata (no downloads):
+  python scraper.py --no-download
+
+Custom save location:
+  python scraper.py --output-dir /path/to/folder
+
+═══════════════════════════════════════════════════════════════
+
+TROUBLESHOOTING:
+════════════════
+
+❌ "Python not found"
+   → Reinstall Python with "Add to PATH" checked
+
+❌ "Permission denied"
+   → Run as Administrator (Windows) or use sudo (Mac/Linux)
+
+❌ "403 Forbidden" errors
+   → Website is blocking automated requests
+   → Try again later or download one set at a time with delays
+
+❌ Program stopped
+   → Just run the command again
+   → It will skip already-downloaded files
+
+═══════════════════════════════════════════════════════════════
+
+NEED MORE HELP?
+═══════════════
+
+📖 Read BEGINNER_GUIDE.md for detailed instructions
+📖 Read PLATFORM_NOTES.md for OS-specific info
+📖 Read README.md for technical details
+
+═══════════════════════════════════════════════════════════════
+
+WHERE ARE MY FILES?
+
+Windows: C:\Users\YourName\Documents\Epstein\
+Mac:     /Users/YourName/Documents/Epstein/
+Linux:   /home/YourName/Documents/Epstein/
+
+Open File Explorer/Finder and navigate to Documents → Epstein
+
+═══════════════════════════════════════════════════════════════
+
+Good luck! 🍀
