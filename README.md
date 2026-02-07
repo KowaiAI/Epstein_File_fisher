@@ -8,6 +8,8 @@
 
 Download documents from the Department of Justice's Epstein Files Transparency Act disclosure portal.
 
+(docs/images/interactive-menu.png)
+
 ## 🌟 Two Download Methods
 
 ### Method 1: CSV Downloader (RECOMMENDED) ⭐
@@ -40,7 +42,7 @@ python src/csv_downloader.py
 
 When you run the program, you'll see a user-friendly menu:
 
-![Interactive Menu](docs/images/interactive-menu.png)
+![Interactive Menu]
 
 The menu allows you to:
 - Select individual data sets (1-12)
