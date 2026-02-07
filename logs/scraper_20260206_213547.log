@@ -1,0 +1,54 @@
+2026-02-06 21:35:47,979 [INFO] Logging to logs/scraper_20260206_213547.log
+2026-02-06 21:35:47,979 [INFO] Starting DOJ Epstein Disclosures scraper
+2026-02-06 21:35:47,979 [INFO] Fetching main page: https://www.justice.gov/epstein/doj-disclosures
+2026-02-06 21:35:49,195 [INFO] Found Data Set 1: https://www.justice.gov/epstein/doj-disclosures/data-set-1-files
+2026-02-06 21:35:49,196 [INFO] Found Data Set 2: https://www.justice.gov/epstein/doj-disclosures/data-set-2-files
+2026-02-06 21:35:49,196 [INFO] Found Data Set 3: https://www.justice.gov/epstein/doj-disclosures/data-set-3-files
+2026-02-06 21:35:49,196 [INFO] Found Data Set 4: https://www.justice.gov/epstein/doj-disclosures/data-set-4-files
+2026-02-06 21:35:49,196 [INFO] Found Data Set 5: https://www.justice.gov/epstein/doj-disclosures/data-set-5-files
+2026-02-06 21:35:49,196 [INFO] Found Data Set 6: https://www.justice.gov/epstein/doj-disclosures/data-set-6-files
+2026-02-06 21:35:49,196 [INFO] Found Data Set 7: https://www.justice.gov/epstein/doj-disclosures/data-set-7-files
+2026-02-06 21:35:49,196 [INFO] Found Data Set 8: https://www.justice.gov/epstein/doj-disclosures/data-set-8-files
+2026-02-06 21:35:49,196 [INFO] Found Data Set 9: https://www.justice.gov/epstein/doj-disclosures/data-set-9-files
+2026-02-06 21:35:49,196 [INFO] Found Data Set 10: https://www.justice.gov/epstein/doj-disclosures/data-set-10-files
+2026-02-06 21:35:49,196 [INFO] Found Data Set 11: https://www.justice.gov/epstein/doj-disclosures/data-set-11-files
+2026-02-06 21:35:49,196 [INFO] Found Data Set 12: https://www.justice.gov/epstein/doj-disclosures/data-set-12-files
+2026-02-06 21:35:49,196 [INFO] Scraping Data Set 1
+2026-02-06 21:35:50,257 [INFO] Data Set 1 has 64 pages
+2026-02-06 21:35:51,312 [WARNING] Request failed (attempt 1/3): 403 Client Error: Forbidden for url: https://www.justice.gov/epstein/doj-disclosures/data-set-1-files?page=1
+2026-02-06 21:35:57,477 [WARNING] Request failed (attempt 2/3): 403 Client Error: Forbidden for url: https://www.justice.gov/epstein/doj-disclosures/data-set-1-files?page=1
+2026-02-06 21:36:03,641 [WARNING] Request failed (attempt 3/3): 403 Client Error: Forbidden for url: https://www.justice.gov/epstein/doj-disclosures/data-set-1-files?page=1
+2026-02-06 21:36:03,641 [ERROR] Failed to fetch https://www.justice.gov/epstein/doj-disclosures/data-set-1-files?page=1 after 3 attempts
+2026-02-06 21:36:04,839 [WARNING] Request failed (attempt 1/3): 403 Client Error: Forbidden for url: https://www.justice.gov/epstein/doj-disclosures/data-set-1-files?page=2
+2026-02-06 21:36:10,985 [WARNING] Request failed (attempt 2/3): 403 Client Error: Forbidden for url: https://www.justice.gov/epstein/doj-disclosures/data-set-1-files?page=2
+2026-02-06 21:36:17,159 [WARNING] Request failed (attempt 3/3): 403 Client Error: Forbidden for url: https://www.justice.gov/epstein/doj-disclosures/data-set-1-files?page=2
+2026-02-06 21:36:17,160 [ERROR] Failed to fetch https://www.justice.gov/epstein/doj-disclosures/data-set-1-files?page=2 after 3 attempts
+2026-02-06 21:36:18,312 [WARNING] Request failed (attempt 1/3): 403 Client Error: Forbidden for url: https://www.justice.gov/epstein/doj-disclosures/data-set-1-files?page=3
+2026-02-06 21:36:24,455 [WARNING] Request failed (attempt 2/3): 403 Client Error: Forbidden for url: https://www.justice.gov/epstein/doj-disclosures/data-set-1-files?page=3
+2026-02-06 21:36:30,584 [WARNING] Request failed (attempt 3/3): 403 Client Error: Forbidden for url: https://www.justice.gov/epstein/doj-disclosures/data-set-1-files?page=3
+2026-02-06 21:36:30,584 [ERROR] Failed to fetch https://www.justice.gov/epstein/doj-disclosures/data-set-1-files?page=3 after 3 attempts
+2026-02-06 21:36:31,729 [WARNING] Request failed (attempt 1/3): 403 Client Error: Forbidden for url: https://www.justice.gov/epstein/doj-disclosures/data-set-1-files?page=4
+2026-02-06 21:36:37,902 [WARNING] Request failed (attempt 2/3): 403 Client Error: Forbidden for url: https://www.justice.gov/epstein/doj-disclosures/data-set-1-files?page=4
+2026-02-06 21:36:44,058 [WARNING] Request failed (attempt 3/3): 403 Client Error: Forbidden for url: https://www.justice.gov/epstein/doj-disclosures/data-set-1-files?page=4
+2026-02-06 21:36:44,058 [ERROR] Failed to fetch https://www.justice.gov/epstein/doj-disclosures/data-set-1-files?page=4 after 3 attempts
+2026-02-06 21:36:45,253 [WARNING] Request failed (attempt 1/3): 403 Client Error: Forbidden for url: https://www.justice.gov/epstein/doj-disclosures/data-set-1-files?page=5
+2026-02-06 21:36:51,395 [WARNING] Request failed (attempt 2/3): 403 Client Error: Forbidden for url: https://www.justice.gov/epstein/doj-disclosures/data-set-1-files?page=5
+2026-02-06 21:36:57,537 [WARNING] Request failed (attempt 3/3): 403 Client Error: Forbidden for url: https://www.justice.gov/epstein/doj-disclosures/data-set-1-files?page=5
+2026-02-06 21:36:57,537 [ERROR] Failed to fetch https://www.justice.gov/epstein/doj-disclosures/data-set-1-files?page=5 after 3 attempts
+2026-02-06 21:36:58,688 [WARNING] Request failed (attempt 1/3): 403 Client Error: Forbidden for url: https://www.justice.gov/epstein/doj-disclosures/data-set-1-files?page=6
+2026-02-06 21:37:04,841 [WARNING] Request failed (attempt 2/3): 403 Client Error: Forbidden for url: https://www.justice.gov/epstein/doj-disclosures/data-set-1-files?page=6
+2026-02-06 21:37:10,969 [WARNING] Request failed (attempt 3/3): 403 Client Error: Forbidden for url: https://www.justice.gov/epstein/doj-disclosures/data-set-1-files?page=6
+2026-02-06 21:37:10,969 [ERROR] Failed to fetch https://www.justice.gov/epstein/doj-disclosures/data-set-1-files?page=6 after 3 attempts
+2026-02-06 21:37:12,116 [WARNING] Request failed (attempt 1/3): 403 Client Error: Forbidden for url: https://www.justice.gov/epstein/doj-disclosures/data-set-1-files?page=7
+2026-02-06 21:37:18,252 [WARNING] Request failed (attempt 2/3): 403 Client Error: Forbidden for url: https://www.justice.gov/epstein/doj-disclosures/data-set-1-files?page=7
+2026-02-06 21:37:24,383 [WARNING] Request failed (attempt 3/3): 403 Client Error: Forbidden for url: https://www.justice.gov/epstein/doj-disclosures/data-set-1-files?page=7
+2026-02-06 21:37:24,384 [ERROR] Failed to fetch https://www.justice.gov/epstein/doj-disclosures/data-set-1-files?page=7 after 3 attempts
+2026-02-06 21:37:25,530 [WARNING] Request failed (attempt 1/3): 403 Client Error: Forbidden for url: https://www.justice.gov/epstein/doj-disclosures/data-set-1-files?page=8
+2026-02-06 21:37:31,683 [WARNING] Request failed (attempt 2/3): 403 Client Error: Forbidden for url: https://www.justice.gov/epstein/doj-disclosures/data-set-1-files?page=8
+2026-02-06 21:37:37,858 [WARNING] Request failed (attempt 3/3): 403 Client Error: Forbidden for url: https://www.justice.gov/epstein/doj-disclosures/data-set-1-files?page=8
+2026-02-06 21:37:37,858 [ERROR] Failed to fetch https://www.justice.gov/epstein/doj-disclosures/data-set-1-files?page=8 after 3 attempts
+2026-02-06 21:37:39,010 [WARNING] Request failed (attempt 1/3): 403 Client Error: Forbidden for url: https://www.justice.gov/epstein/doj-disclosures/data-set-1-files?page=9
+2026-02-06 21:37:45,172 [WARNING] Request failed (attempt 2/3): 403 Client Error: Forbidden for url: https://www.justice.gov/epstein/doj-disclosures/data-set-1-files?page=9
+2026-02-06 21:37:51,320 [WARNING] Request failed (attempt 3/3): 403 Client Error: Forbidden for url: https://www.justice.gov/epstein/doj-disclosures/data-set-1-files?page=9
+2026-02-06 21:37:51,320 [ERROR] Failed to fetch https://www.justice.gov/epstein/doj-disclosures/data-set-1-files?page=9 after 3 attempts
+2026-02-06 21:37:52,461 [WARNING] Request failed (attempt 1/3): 403 Client Error: Forbidden for url: https://www.justice.gov/epstein/doj-disclosures/data-set-1-files?page=10
