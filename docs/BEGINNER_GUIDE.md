@@ -44,8 +44,7 @@ This program automatically downloads public documents from the U.S. Department o
 
 ### 3. **Time**
    - Setup: 10-15 minutes
-   - Downloading all files: 2-6 hours (you can leave it running)
-
+   - Downloading all files: Depends on what method your using and how many data sets Can range from 1 minmute or more
 ### 4. **Patience**
    - This guide explains everything step-by-step
    - If something doesn't work, check the "Troubleshooting" section at the end
