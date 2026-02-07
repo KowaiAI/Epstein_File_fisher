@@ -22,6 +22,11 @@ data/
 *.zip
 *.rar
 
+# But keep documentation images
+!docs/images/*.png
+!docs/images/*.jpg
+!docs/images/*.jpeg
+
 # Metadata (generated during scraping)
 metadata.json
 
