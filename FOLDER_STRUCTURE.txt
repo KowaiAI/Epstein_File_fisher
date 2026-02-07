@@ -1,0 +1,149 @@
+░▒█▀▀▀░░▀░░█░░█▀▀░░░▒█▀▀▀░░▀░░█▀▀░█░░░░█▀▀░█▀▀▄
+░▒█▀▀░░░█▀░█░░█▀▀░░░▒█▀▀░░░█▀░▀▀▄░█▀▀█░█▀▀░█▄▄▀
+░▒█░░░░▀▀▀░▀▀░▀▀▀░░░▒█░░░░▀▀▀░▀▀▀░▀░░▀░▀▀▀░▀░▀▀
+
+╔════════════════════════════════════════════════════════════════════╗
+║            FOLDER STRUCTURE AFTER DOWNLOAD                        ║
+║         (What You'll See In Your Documents Folder)                ║
+╚════════════════════════════════════════════════════════════════════╝
+
+Your Documents Folder
+│
+└── 📁 Epstein/                          ← Main folder
+    │
+    ├── 📄 metadata.json                 ← Info about all files
+    │
+    ├── 📁 data_set_1/                   ← First set of files
+    │   ├── 📁 documents/                ← PDF and text files
+    │   │   ├── 📄 EFTA00000001.pdf
+    │   │   ├── 📄 EFTA00000002.pdf
+    │   │   ├── 📄 EFTA00000003.pdf
+    │   │   └── ... (many more PDFs)
+    │   │
+    │   ├── 📁 videos/                   ← Video files (if any)
+    │   │   ├── 🎥 EFTA00000050.mp4
+    │   │   ├── 🎥 EFTA00000051.mov
+    │   │   └── ...
+    │   │
+    │   ├── 📁 audio/                    ← Audio files (if any)
+    │   │   ├── 🎵 EFTA00000100.mp3
+    │   │   ├── 🎵 EFTA00000101.wav
+    │   │   └── ...
+    │   │
+    │   ├── 📁 images/                   ← Image files (if any)
+    │   │   ├── 🖼️  EFTA00000200.jpg
+    │   │   ├── 🖼️  EFTA00000201.png
+    │   │   └── ...
+    │   │
+    │   └── 📁 archives/                 ← ZIP files (if any)
+    │       ├── 📦 EFTA00000300.zip
+    │       └── ...
+    │
+    ├── 📁 data_set_2/                   ← Second set of files
+    │   ├── 📁 documents/
+    │   ├── 📁 videos/
+    │   ├── 📁 audio/
+    │   ├── 📁 images/
+    │   └── 📁 archives/
+    │
+    ├── 📁 data_set_3/                   ← Third set of files
+    │   └── ... (same structure)
+    │
+    ├── 📁 data_set_4/
+    ├── 📁 data_set_5/
+    ├── 📁 data_set_6/
+    ├── 📁 data_set_7/
+    ├── 📁 data_set_8/
+    ├── 📁 data_set_9/
+    ├── 📁 data_set_10/
+    ├── 📁 data_set_11/
+    └── 📁 data_set_12/
+        └── ... (same structure for each)
+
+════════════════════════════════════════════════════════════════════
+
+HOW TO FIND YOUR FILES:
+════════════════════════
+
+WINDOWS:
+1. Click the File Explorer icon (folder icon on taskbar)
+2. Click "Documents" on the left side
+3. Double-click "Epstein" folder
+4. Double-click any "data_set_#" folder
+5. Double-click "documents" folder to see PDFs
+
+MAC:
+1. Open Finder
+2. Click your username in the sidebar
+3. Double-click "Documents"
+4. Double-click "Epstein" folder
+5. Double-click any "data_set_#" folder
+6. Double-click "documents" folder to see PDFs
+
+LINUX:
+1. Open Files (or Nautilus)
+2. Click "Home" in the sidebar
+3. Double-click "Documents"
+4. Double-click "Epstein" folder
+5. Double-click any "data_set_#" folder
+6. Double-click "documents" folder to see PDFs
+
+════════════════════════════════════════════════════════════════════
+
+FILE NAMING PATTERN:
+════════════════════
+
+All files follow this pattern: EFTA########.extension
+
+Examples:
+• EFTA00000001.pdf    ← Document file #1
+• EFTA00000050.mp4    ← Video file #50
+• EFTA00000100.mp3    ← Audio file #100
+• EFTA00000200.jpg    ← Image file #200
+• EFTA00000300.zip    ← Archive file #300
+
+The numbers go from 00000001 to 99999999
+
+════════════════════════════════════════════════════════════════════
+
+HOW MANY FILES?
+═══════════════
+
+Approximate numbers (varies by data set):
+
+📄 Documents: Most files are PDFs (80-90%)
+🎥 Videos: Fewer, but very large files (1-5%)
+🎵 Audio: Some interview recordings (5-10%)
+🖼️ Images: Photos and scans (5-10%)
+📦 Archives: Compressed collections (1-2%)
+
+Total: ~38,000 files across all 12 data sets
+Size: ~50-150 GB total
+
+════════════════════════════════════════════════════════════════════
+
+METADATA.JSON FILE:
+═══════════════════
+
+This file contains information about every downloaded file:
+• Filename
+• File type (PDF, MP4, etc.)
+• File size
+• Download URL
+• Data set number
+
+You can open it with Notepad (Windows), TextEdit (Mac), or any text
+editor. It's useful for searching or organizing files.
+
+════════════════════════════════════════════════════════════════════
+
+TIPS:
+═════
+
+✓ Files are sorted by data set first, then by type
+✓ You can search for specific file numbers using File Explorer
+✓ You can move folders around after downloading
+✓ Keep the metadata.json file - it's useful for reference
+✓ You can delete data sets you don't need to save space
+
+════════════════════════════════════════════════════════════════════

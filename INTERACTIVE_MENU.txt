@@ -1,0 +1,176 @@
+╔════════════════════════════════════════════════════════════════════╗
+║                    INTERACTIVE MENU GUIDE                         ║
+║              (Easiest Way to Download Files)                      ║
+╚════════════════════════════════════════════════════════════════════╝
+
+The interactive menu makes it SUPER EASY to choose which data sets to
+download. No complicated commands to remember!
+
+═══════════════════════════════════════════════════════════════════
+
+HOW TO USE THE INTERACTIVE MENU:
+═════════════════════════════════
+
+1. Open Command Prompt / Terminal
+2. Navigate to the scraper folder
+3. Type: python scraper.py
+4. Press Enter
+
+You'll see this menu:
+
+┌──────────────────────────────────────────────────────────────────┐
+│ Available Data Sets:                                             │
+│ ──────────────────────────────────────────────────────────────── │
+│   [ 1] Data Set 1                                                │
+│   [ 2] Data Set 2                                                │
+│   [ 3] Data Set 3                                                │
+│   ...                                                             │
+│   [12] Data Set 12                                               │
+│                                                                   │
+│   [99] Download ALL data sets (1-12)                            │
+│   [ 0] Exit without downloading                                  │
+│ ──────────────────────────────────────────────────────────────── │
+│                                                                   │
+│ Enter your choice (0-12, or 99 for all):                        │
+└──────────────────────────────────────────────────────────────────┘
+
+═══════════════════════════════════════════════════════════════════
+
+OPTION 1: DOWNLOAD ONE DATA SET (RECOMMENDED FOR TESTING)
+═════════════════════════════════════════════════════════════
+
+Step 1: Type 1 and press Enter
+Step 2: When asked "Add another data set?", type no and press Enter
+Step 3: Program starts downloading Data Set 1
+
+EXAMPLE:
+┌──────────────────────────────────────────────────────────────────┐
+│ Enter your choice (0-12, or 99 for all): 1                      │
+│ ✓ Selected: Data Set 1                                           │
+│ Add another data set? (yes/no): no                              │
+│                                                                   │
+│ Download Configuration:                                          │
+│   Data Sets: [1]                                                 │
+│   Output Directory: ~/Documents/Epstein/                         │
+│   Download Files: True                                           │
+└──────────────────────────────────────────────────────────────────┘
+
+═══════════════════════════════════════════════════════════════════
+
+OPTION 2: DOWNLOAD MULTIPLE SPECIFIC DATA SETS
+═══════════════════════════════════════════════
+
+Step 1: Type a number (like 1) and press Enter
+Step 2: When asked "Add another data set?", type yes and press Enter
+Step 3: Type another number (like 5) and press Enter
+Step 4: Type another number or type done and press Enter
+Step 5: Program starts downloading your selected sets
+
+EXAMPLE:
+┌──────────────────────────────────────────────────────────────────┐
+│ Enter your choice (0-12, or 99 for all): 1                      │
+│ ✓ Selected: Data Set 1                                           │
+│ Add another data set? (yes/no): yes                             │
+│ Enter another data set number (1-12), or 'done' to finish: 5    │
+│ ✓ Added Data Set 5                                               │
+│ Enter another data set number (1-12), or 'done' to finish: 10   │
+│ ✓ Added Data Set 10                                              │
+│ Enter another data set number (1-12), or 'done' to finish: done │
+│                                                                   │
+│ Download Configuration:                                          │
+│   Data Sets: [1, 5, 10]                                          │
+│   Output Directory: ~/Documents/Epstein/                         │
+│   Download Files: True                                           │
+└──────────────────────────────────────────────────────────────────┘
+
+═══════════════════════════════════════════════════════════════════
+
+OPTION 3: DOWNLOAD ALL DATA SETS
+═════════════════════════════════
+
+Step 1: Type 99 and press Enter
+Step 2: Type yes to confirm (this downloads EVERYTHING!)
+Step 3: Program starts downloading all 12 data sets
+
+EXAMPLE:
+┌──────────────────────────────────────────────────────────────────┐
+│ Enter your choice (0-12, or 99 for all): 99                     │
+│ ⚠️  Download ALL 12 data sets? This may take several hours!     │
+│     (yes/no): yes                                                │
+│                                                                   │
+│ Download Configuration:                                          │
+│   Data Sets: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]           │
+│   Output Directory: ~/Documents/Epstein/                         │
+│   Download Files: True                                           │
+└──────────────────────────────────────────────────────────────────┘
+
+⚠️  WARNING: This downloads ~38,000 files and can take 2-6 hours!
+
+═══════════════════════════════════════════════════════════════════
+
+OPTION 4: EXIT WITHOUT DOWNLOADING
+═══════════════════════════════════
+
+Step 1: Type 0 and press Enter
+Step 2: Program closes
+
+EXAMPLE:
+┌──────────────────────────────────────────────────────────────────┐
+│ Enter your choice (0-12, or 99 for all): 0                      │
+│ ✓ Exiting without downloading. Goodbye!                          │
+└──────────────────────────────────────────────────────────────────┘
+
+═══════════════════════════════════════════════════════════════════
+
+WHAT HAPPENS AFTER YOU SELECT:
+═══════════════════════════════
+
+1. The program shows your configuration
+2. If downloading multiple sets, asks for confirmation
+3. Starts downloading files
+4. Shows progress bars
+5. Creates folders in ~/Documents/Epstein/
+6. Saves all files organized by data set and type
+
+═══════════════════════════════════════════════════════════════════
+
+TIPS:
+═════
+
+✓ Start with Data Set 1 to test (type 1)
+✓ You can always run the program again to download more sets
+✓ Already-downloaded files are automatically skipped
+✓ Press Ctrl+C to cancel at any time
+
+═══════════════════════════════════════════════════════════════════
+
+TROUBLESHOOTING:
+════════════════
+
+❌ "Invalid choice"
+   → Make sure you typed a number 0-12 or 99
+   → Check that you pressed Enter after typing
+
+❌ Menu doesn't appear
+   → Make sure you're in the correct folder
+   → Try: python scraper.py --interactive
+
+❌ Want to skip the menu
+   → Use command line: python scraper.py --data-sets 1 2 3
+
+═══════════════════════════════════════════════════════════════════
+
+COMPARISON: INTERACTIVE vs COMMAND LINE
+═══════════════════════════════════════
+
+INTERACTIVE (EASIER):
+  python scraper.py
+  → Menu appears → Select numbers → Done!
+
+COMMAND LINE (FASTER IF YOU KNOW WHAT YOU WANT):
+  python scraper.py --data-sets 1 5 10
+  → No menu → Downloads immediately
+
+Both do the same thing - choose what's easier for you!
+
+═══════════════════════════════════════════════════════════════════

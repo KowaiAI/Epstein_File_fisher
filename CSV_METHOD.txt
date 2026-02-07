@@ -1,0 +1,213 @@
+╔════════════════════════════════════════════════════════════════════╗
+║  ░▒█▀▀▀░░▀░░█░░█▀▀░░░▒█▀▀▀░░▀░░█▀▀░█░░░░█▀▀░█▀▀▄                ║
+║  ░▒█▀▀░░░█▀░█░░█▀▀░░░▒█▀▀░░░█▀░▀▀▄░█▀▀█░█▀▀░█▄▄▀                ║
+║  ░▒█░░░░▀▀▀░▀▀░▀▀▀░░░▒█░░░░▀▀▀░▀▀▀░▀░░▀░▀▀▀░▀░▀▀                ║
+║                                                                    ║
+║              CSV METHOD (RECOMMENDED - NO BOT ISSUES!)            ║
+╚════════════════════════════════════════════════════════════════════╝
+
+🌟 **RECOMMENDED METHOD** - Uses direct download links!
+
+The CSV method downloads files using a CSV file with direct links.
+This avoids bot detection and is MUCH more reliable!
+
+════════════════════════════════════════════════════════════════════
+
+WHY USE THE CSV METHOD?
+═══════════════════════
+
+✅ NO bot detection issues
+✅ Direct download links
+✅ Much more reliable
+✅ Faster (no waiting for page loads)
+✅ Works every time
+✅ Same interactive menu
+✅ Same file organization
+
+❌ Web scraping has problems:
+   - Bot detection blocks pagination
+   - 403 Forbidden errors
+   - Unreliable
+   - Slow
+
+════════════════════════════════════════════════════════════════════
+
+REQUIREMENTS:
+═════════════
+
+You need the CSV file: master_file_links.csv
+
+Location: /home/hibiscus/Downloads/master_file_links.csv
+
+This CSV contains 575 direct download links for all 12 data sets.
+
+════════════════════════════════════════════════════════════════════
+
+HOW TO USE:
+═══════════
+
+OPTION 1: INTERACTIVE MENU (EASIEST)
+─────────────────────────────────────
+
+1. Open Terminal/Command Prompt
+2. Navigate to the folder:
+   cd ~/Documents/Claude/scrapers/doj-epstein
+
+3. Activate environment:
+   source venv/bin/activate
+
+4. Run CSV downloader:
+   python csv_downloader.py
+
+5. Select data sets from the menu!
+
+OPTION 2: COMMAND LINE
+──────────────────────
+
+Download specific data sets:
+  python csv_downloader.py --data-sets 1 2 3
+
+Download just Data Set 8:
+  python csv_downloader.py --data-sets 8
+
+Download everything:
+  python csv_downloader.py --data-sets 1 2 3 4 5 6 7 8 9 10 11 12
+
+Custom CSV location:
+  python csv_downloader.py /path/to/file.csv --data-sets 8
+
+Custom output directory:
+  python csv_downloader.py --output-dir /path/to/output --data-sets 1
+
+Just collect metadata (no download):
+  python csv_downloader.py --no-download
+
+════════════════════════════════════════════════════════════════════
+
+WHAT'S IN THE CSV?
+══════════════════
+
+The CSV has these columns:
+- number: Sequential number
+- url: Direct download link
+- link_text: Filename (EFTA00000001.pdf)
+- data_set: Which data set (1-12)
+
+Total: 575 files across 12 data sets
+
+Data Set Breakdown:
+  Data Set 1:  50 files
+  Data Set 2:  49 files
+  Data Set 3:  49 files
+  Data Set 4:  49 files
+  Data Set 5:  49 files
+  Data Set 6:  13 files
+  Data Set 7:  17 files
+  Data Set 8:  99 files  ← Largest!
+  Data Set 9:  50 files
+  Data Set 10: 50 files
+  Data Set 11: 50 files
+  Data Set 12: 50 files
+
+════════════════════════════════════════════════════════════════════
+
+EXAMPLES:
+═════════
+
+# Download Data Set 8 (99 files):
+python csv_downloader.py --data-sets 8
+
+# Download Data Sets 1, 5, and 10:
+python csv_downloader.py --data-sets 1 5 10
+
+# Use different CSV file:
+python csv_downloader.py ~/Desktop/links.csv --data-sets 1
+
+# Save to external drive:
+python csv_downloader.py --output-dir /mnt/external/Epstein --data-sets 8
+
+════════════════════════════════════════════════════════════════════
+
+SPEED:
+══════
+
+Average: ~2 seconds per file
+Data Set 8 (99 files): ~3-4 minutes
+All files (575): ~20-25 minutes
+
+Much faster than web scraping! No waiting for page loads.
+
+════════════════════════════════════════════════════════════════════
+
+COMPARISON:
+═══════════
+
+WEB SCRAPER (scraper.py):
+  ❌ Bot detection issues
+  ❌ 403 Forbidden errors
+  ❌ Unreliable pagination
+  ❌ Slow (loads every page)
+  ✅ Finds new files automatically
+
+CSV DOWNLOADER (csv_downloader.py):
+  ✅ No bot detection
+  ✅ Direct links work perfectly
+  ✅ Very reliable
+  ✅ Fast downloads
+  ❌ Need CSV file updated manually
+
+**RECOMMENDATION: Use CSV downloader!**
+
+════════════════════════════════════════════════════════════════════
+
+TROUBLESHOOTING:
+════════════════
+
+❌ "CSV file not found"
+   → Make sure the path is correct
+   → Default: /home/hibiscus/Downloads/master_file_links.csv
+   → Or specify: python csv_downloader.py /path/to/file.csv
+
+❌ "No data sets found"
+   → CSV might be empty or corrupted
+   → Re-download the CSV file
+
+❌ Download fails
+   → Check internet connection
+   → Try again - it will skip already-downloaded files
+
+❌ Slow downloads
+   → Normal! Each file takes ~2 seconds
+   → This is intentional rate limiting
+
+════════════════════════════════════════════════════════════════════
+
+FILES GO TO:
+════════════
+
+Same location as web scraper:
+  ~/Documents/Epstein/data_set_X/documents/
+
+Example:
+  ~/Documents/Epstein/data_set_8/documents/EFTA00009676.pdf
+
+════════════════════════════════════════════════════════════════════
+
+WHICH METHOD SHOULD I USE?
+═══════════════════════════
+
+Use CSV downloader if:
+  ✅ You have the CSV file
+  ✅ You want reliable downloads
+  ✅ You're downloading specific data sets
+  ✅ You don't want bot detection issues
+
+Use web scraper if:
+  ✅ You don't have the CSV file
+  ✅ You want to discover NEW files
+  ✅ CSV is outdated
+  ✅ You're willing to deal with bot detection
+
+**99% of users should use the CSV downloader!**
+
+════════════════════════════════════════════════════════════════════

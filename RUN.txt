@@ -1,0 +1,96 @@
+╔════════════════════════════════════════════════════════════════════╗
+║  ░▒█▀▀▀░░▀░░█░░█▀▀░░░▒█▀▀▀░░▀░░█▀▀░█░░░░█▀▀░█▀▀▄                ║
+║  ░▒█▀▀░░░█▀░█░░█▀▀░░░▒█▀▀░░░█▀░▀▀▄░█▀▀█░█▀▀░█▄▄▀                ║
+║  ░▒█░░░░▀▀▀░▀▀░▀▀▀░░░▒█░░░░▀▀▀░▀▀▀░▀░░▀░▀▀▀░▀░▀▀                ║
+║                                                                    ║
+║                   HOW TO RUN FILE FISHER                           ║
+╚════════════════════════════════════════════════════════════════════╝
+
+📖 FIRST TIME? Read BEGINNER_GUIDE.md for detailed setup instructions!
+
+════════════════════════════════════════════════════════════════════
+
+🚀 QUICK START (If you already did setup):
+═══════════════════════════════════════════
+
+LINUX / MAC:
+────────────
+1. Open Terminal
+2. Go to the folder:
+   cd ~/Documents/Claude/scrapers/doj-epstein
+
+3. Activate environment:
+   source venv/bin/activate
+
+4. Run:
+   python scraper.py
+
+WINDOWS:
+────────
+1. Open Command Prompt
+2. Go to the folder:
+   cd Documents\Claude\scrapers\doj-epstein
+
+3. Activate environment:
+   venv\Scripts\activate
+
+4. Run:
+   python scraper.py
+
+════════════════════════════════════════════════════════════════════
+
+⚡ ONE-TIME SETUP (Run these once):
+════════════════════════════════════
+
+LINUX / MAC:
+────────────
+./setup.sh
+
+Or manually:
+  python3 -m venv venv
+  source venv/bin/activate
+  pip install -r requirements.txt
+
+WINDOWS:
+────────
+Double-click: setup.bat
+
+Or manually:
+  python -m venv venv
+  venv\Scripts\activate
+  pip install -r requirements.txt
+
+════════════════════════════════════════════════════════════════════
+
+❓ TROUBLESHOOTING:
+════════════════════
+
+❌ "Python not found"
+   → Install Python from python.org
+   → Windows: Check "Add Python to PATH" during install
+
+❌ "Module not found" (like 'tqdm')
+   → You need to install dependencies first
+   → Run setup.sh (Linux/Mac) or setup.bat (Windows)
+   → Or manually: pip install -r requirements.txt
+
+❌ "Permission denied"
+   → Linux/Mac: chmod +x setup.sh
+   → Windows: Right-click Command Prompt → Run as Administrator
+
+❌ Menu doesn't appear
+   → Make sure virtual environment is activated
+   → You should see (venv) at the start of your command prompt
+
+════════════════════════════════════════════════════════════════════
+
+📚 DOCUMENTATION:
+═════════════════
+
+Start here:    BEGINNER_GUIDE.md    (Step-by-step for beginners)
+Menu help:     INTERACTIVE_MENU.txt (How to use the menu)
+Quick ref:     QUICK_START.txt      (All commands)
+Folders:       FOLDER_STRUCTURE.txt (Where files go)
+OS-specific:   PLATFORM_NOTES.md    (Windows/Mac/Linux notes)
+
+════════════════════════════════════════════════════════════════════
