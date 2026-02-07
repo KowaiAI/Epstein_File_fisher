@@ -91,16 +91,7 @@ class DOJEpsteinScraper:
         self.logger.info(f"Logging to {log_file}")
 
     def _make_request(self, url: str, stream: bool = False) -> Optional[requests.Response]:
-        """
-        Make HTTP request with retry logic.
-
-        Args:
-            url: URL to fetch
-            stream: Whether to stream the response (for large files)
-
-        Returns:
-            Response object or None if failed
-        """
+        """Make an HTTP request with retry logic."""
         for attempt in range(config.MAX_RETRIES):
             try:
                 time.sleep(config.RATE_LIMIT_DELAY)
@@ -123,12 +114,7 @@ class DOJEpsteinScraper:
                     return None
 
     def get_data_set_urls(self) -> Dict[int, str]:
-        """
-        Get URLs for all data set pages.
-
-        Returns:
-            Dictionary mapping data set number to URL
-        """
+        """Get URLs for all data set pages."""
         self.logger.info(f"Fetching main page: {config.MAIN_PAGE_URL}")
         response = self._make_request(config.MAIN_PAGE_URL)
 
@@ -152,16 +138,17 @@ class DOJEpsteinScraper:
         return data_set_urls
 
     def get_pagination_info(self, soup: BeautifulSoup) -> int:
-        """
-        Extract total number of pages from pagination controls.
-
-        Args:
-            soup: BeautifulSoup object of the page
-
-        Returns:
-            Total number of pages
-        """
         # Look for pagination nav
+        """def get_pagination_info(self, soup: BeautifulSoup) -> int:
+        Extract total number of pages from pagination controls.  This function searches
+        for the pagination navigation in the provided  BeautifulSoup object. It
+        identifies the maximum page number by checking  for "Last" buttons and page
+        number links. If no pagination is found,  it defaults to returning 1,
+        indicating a single page. The function  ensures that the page count is
+        accurately derived from the links present.
+        
+        Args:
+            soup: BeautifulSoup object of the page"""
         pagination = soup.find("nav", {"aria-label": "Pagination"})
         if not pagination:
             return 1
@@ -186,15 +173,17 @@ class DOJEpsteinScraper:
         return max_page
 
     def extract_documents_from_page(self, soup: BeautifulSoup, data_set_num: int) -> List[Dict]:
-        """
-        Extract document information from a page.
-
+        """Extract document information from a page.
+        
+        This function retrieves document metadata from a given BeautifulSoup object
+        representing a webpage. It identifies all file links, checks their extensions
+        against supported types, and categorizes them accordingly. The resulting
+        metadata, including filename, URL, dataset number, file type, and category,  is
+        collected into a list of dictionaries for further processing.
+        
         Args:
             soup: BeautifulSoup object of the page
             data_set_num: Data set number
-
-        Returns:
-            List of document metadata dictionaries
         """
         documents = []
 
@@ -238,15 +227,17 @@ class DOJEpsteinScraper:
         return documents
 
     def scrape_data_set(self, data_set_num: int, data_set_url: str) -> List[Dict]:
-        """
-        Scrape all documents from a data set.
-
+        """Scrape all documents from a data set.
+        
+        This function retrieves all documents from a specified data set by first
+        determining the total number of pages through a request to the data set  URL.
+        It then iterates through each page, extracting document metadata  using the
+        `extract_documents_from_page` method. The results are logged  for each page,
+        and a final count of all documents found is reported.
+        
         Args:
-            data_set_num: Data set number
-            data_set_url: URL of the data set page
-
-        Returns:
-            List of all document metadata
+            data_set_num (int): Data set number.
+            data_set_url (str): URL of the data set page.
         """
         self.logger.info(f"Scraping Data Set {data_set_num}")
 
@@ -280,17 +271,20 @@ class DOJEpsteinScraper:
         return all_documents
 
     def download_file(self, doc: Dict, data_set_dir: Path) -> bool:
-        """
-        Download a file (any supported type).
-
-        Args:
-            doc: Document metadata dictionary
-            data_set_dir: Directory to save the file
-
-        Returns:
-            True if successful, False otherwise
-        """
         # Create category subdirectory
+        """Download a file (any supported type).
+        
+        This function creates a category subdirectory within the specified
+        data_set_dir to store the downloaded file. It checks if the file  already
+        exists to avoid redundant downloads. If not, it makes a  request to retrieve
+        the file, writes it to disk in chunks, and logs  the download progress.
+        Additionally, it updates the document metadata  with the file size in both
+        bytes and megabytes.
+        
+        Args:
+            doc: Document metadata dictionary.
+            data_set_dir: Directory to save the file.
+        """
         category_dir = data_set_dir / doc["category"]
         category_dir.mkdir(exist_ok=True, parents=True)
 
@@ -331,7 +325,15 @@ class DOJEpsteinScraper:
             return False
 
     def run(self):
-        """Run the complete scraping process."""
+        """Run the complete scraping process.
+        
+        This method initiates the scraping of DOJ Epstein Disclosures by first
+        retrieving all relevant data set URLs. If no data sets are found, it logs  an
+        error and exits. For each data set, it scrapes the metadata and, if  file
+        downloading is enabled, creates a directory for the data set and  downloads the
+        associated files while logging the progress and success  count. Finally, it
+        saves the metadata after the scraping process is  complete.
+        """
         self.logger.info("Starting DOJ Epstein Disclosures scraper")
 
         # Get all data set URLs
@@ -377,7 +379,7 @@ class DOJEpsteinScraper:
         self.logger.info("Scraping complete!")
 
     def _save_metadata(self):
-        """Save collected metadata to JSON file."""
+        """Save collected metadata to a JSON file."""
         metadata_path = self.output_dir / config.METADATA_FILE
 
         with open(metadata_path, "w") as f:
