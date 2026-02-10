@@ -7,7 +7,7 @@ from pathlib import Path
 
 
 def run_test_file(test_file):
-    """Run a single test file and return the result."""
+    """Run a single test file and return the success status."""
     print(f"\n{'='*70}")
     print(f"Running {test_file.name}...")
     print('='*70)
@@ -22,7 +22,15 @@ def run_test_file(test_file):
 
 
 def main():
-    """Run all tests."""
+    """Run all tests.
+    
+    This function locates all test files in the current directory, executes each
+    test,  and summarizes the results. It checks for the presence of files matching
+    the pattern  'test_*.py' and reports the number of tests found. Each test's
+    success or failure is  recorded, and a summary of the results is printed,
+    indicating how many tests passed  and how many failed. If all tests pass, a
+    success message is displayed.
+    """
     tests_dir = Path(__file__).parent
     test_files = sorted(tests_dir.glob('test_*.py'))
     

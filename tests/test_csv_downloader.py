@@ -31,7 +31,14 @@ def test_csv_downloader_init():
 
 
 def test_file_categorization():
-    """Test file type categorization logic."""
+    """Test file type categorization logic.
+    
+    This function tests the categorization of various file types based on their
+    extensions. It defines a set of test cases with expected categories and
+    iterates through them, determining the category for each file based on its
+    extension. The function asserts that the determined category matches the
+    expected category, ensuring the categorization logic works correctly.
+    """
     test_cases = {
         'document.pdf': 'documents',
         'video.mp4': 'videos',
@@ -148,7 +155,7 @@ def test_load_csv_missing_columns():
 
 
 def test_interactive_menu():
-    """Test that interactive menu function exists and has correct signature."""
+    """Test the existence and signature of the interactive_menu function."""
     assert hasattr(csv_downloader, 'interactive_menu')
     import inspect
     sig = inspect.signature(csv_downloader.interactive_menu)

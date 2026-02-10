@@ -18,7 +18,7 @@ def test_base_urls():
 
 
 def test_request_settings():
-    """Test request configuration."""
+    """Test the validity of request configuration settings."""
     assert config.REQUEST_TIMEOUT > 0
     assert config.RATE_LIMIT_DELAY > 0
     assert config.MAX_RETRIES > 0
@@ -27,7 +27,7 @@ def test_request_settings():
 
 
 def test_user_agent():
-    """Test user agent is set."""
+    """Verify that the user agent is properly configured."""
     assert config.USER_AGENT is not None
     assert len(config.USER_AGENT) > 0
     assert "Mozilla" in config.USER_AGENT
@@ -52,7 +52,7 @@ def test_data_sets():
 
 
 def test_supported_extensions():
-    """Test file extension support."""
+    """Test the supported file extensions."""
     assert config.SUPPORTED_EXTENSIONS is not None
     assert len(config.SUPPORTED_EXTENSIONS) > 0
     assert '.pdf' in config.SUPPORTED_EXTENSIONS
