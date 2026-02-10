@@ -164,7 +164,14 @@ class CSVDownloader:
             return False
 
     def download_file(self, file_info: Dict, data_set_dir: Path) -> bool:
-        """Download a single file."""
+        """Download a single file from a given URL.
+        
+        This function creates a directory for the file based on its category,  checks
+        if the file already exists, and if not, downloads it while  respecting rate
+        limits. It logs the download progress and updates  the file_info dictionary
+        with the file size in both bytes and megabytes.  In case of a failure during
+        the download, it cleans up by removing  any partially downloaded file.
+        """
         category_dir = data_set_dir / file_info['category']
         category_dir.mkdir(exist_ok=True, parents=True)
 
@@ -203,10 +210,10 @@ class CSVDownloader:
         """Download selected data sets.
         
         This function iterates over the provided data_set_numbers, checking if each
-        data set exists in self.files_by_dataset. If a data set is found, it logs
-        the download process and either collects metadata or downloads the files
-        to a specified directory. The function also handles the creation of
-        necessary directories and logs the success of each download operation.
+        data set exists in self.files_by_dataset. If a data set is found, it logs the
+        download process and either collects metadata or downloads the files to a
+        specified directory. The function also handles the creation of necessary
+        directories and logs the success of each download operation.
         
         Args:
             data_set_numbers: A list of integers representing the data set numbers to download.

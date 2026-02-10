@@ -164,22 +164,19 @@ class DOJEpsteinScraper:
         return data_set_urls
 
     def get_pagination_info(self, soup: BeautifulSoup) -> int:
+        # Look for pagination nav
         """Extract total number of pages from pagination controls.
         
-        This function analyzes the pagination navigation in a BeautifulSoup object to
+        This function analyzes the pagination navigation in a BeautifulSoup object  to
         determine the total number of pages available. It first checks for the
         presence of a pagination nav element. If found, it retrieves all page links
-        and identifies the maximum page number by examining both the "Last" button and
-        individual page numbers. The function returns the total number of pages based
+        and identifies the maximum page number by examining both the "Last" button  and
+        individual page numbers. The function returns the total number of pages  based
         on the extracted information.
         
         Args:
-            soup: BeautifulSoup object of the page
-            
-        Returns:
-            int: Total number of pages (1 if no pagination found)
+            soup: BeautifulSoup object of the page.
         """
-        # Look for pagination nav
         pagination = soup.find("nav", {"aria-label": "Pagination"})
         if not pagination:
             return 1
@@ -276,17 +273,14 @@ class DOJEpsteinScraper:
         """Scrape all documents from a data set.
         
         This function retrieves all documents from a specified data set by first
-        determining the total number of pages through a request to the data set URL.
-        It then iterates through each page, extracting document metadata using the
-        `extract_documents_from_page` method. The results are logged for each page,
-        and a comprehensive list of all documents is returned at the end.
+        determining the total number of pages through a request to the data set URL. It
+        iterates through each page, extracting document metadata using the
+        `extract_documents_from_page` method. The results are logged for each page, and
+        a comprehensive list of all documents is returned at the end.
         
         Args:
-            data_set_num: Data set number.
-            data_set_url: URL of the data set page.
-            
-        Returns:
-            List[Dict]: List of all document metadata from the data set
+            data_set_num (int): Data set number.
+            data_set_url (str): URL of the data set page.
         """
         self.logger.info(f"Scraping Data Set {data_set_num}")
 
@@ -320,24 +314,21 @@ class DOJEpsteinScraper:
         return all_documents
 
     def download_file(self, doc: Dict, data_set_dir: Path) -> bool:
+        # Create category subdirectory
         """Download a file (any supported type).
         
-        This function creates a category subdirectory within the specified
-        data_set_dir to store the downloaded file. It checks if the file already
-        exists to avoid redundant downloads. If not, it makes a request to the
+        This function creates a category subdirectory within the specified data_set_dir
+        to store the downloaded file. It checks if the file already exists to avoid
+        redundant downloads. If the file is not present, it makes a request to the
         provided URL, streams the content, and saves it to the designated path. The
-        function also logs the download progress and updates the document metadata
-        with the file size.
+        function also logs the download progress and updates the document metadata with
+        the file size.
         
         Args:
             doc: Document metadata dictionary containing 'category',
                 'filename', and 'url'.
             data_set_dir: Directory to save the file.
-            
-        Returns:
-            bool: True if download was successful, False otherwise.
         """
-        # Create category subdirectory
         category_dir = data_set_dir / doc["category"]
         category_dir.mkdir(exist_ok=True, parents=True)
 
