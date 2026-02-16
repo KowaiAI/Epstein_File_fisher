@@ -8,9 +8,16 @@ venv/
 env/
 ENV/
 .venv
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.coverage
+htmlcov/
 
 # Downloaded files (users will download their own)
 data/
+downloads/
 /home/hibiscus/Documents/Epstein/
 *.pdf
 *.mp4
@@ -39,6 +46,7 @@ logs/
 .idea/
 *.swp
 *.swo
+*~
 
 # OS
 .DS_Store
@@ -46,3 +54,4 @@ Thumbs.db
 
 # User-specific CSV file location
 master_file_links.csv
+*.csv
