@@ -1,5 +1,7 @@
 """Configuration for DOJ Epstein Disclosures scraper."""
 
+from pathlib import Path as _Path
+
 # Base URLs
 BASE_URL = "https://www.justice.gov"
 MAIN_PAGE_URL = f"{BASE_URL}/epstein/doj-disclosures"
@@ -11,10 +13,9 @@ MAX_RETRIES = 3
 RETRY_DELAY = 10  # seconds
 
 # User agent (appear as regular browser to avoid bot detection)
-USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
 
 # Output settings (cross-platform defaults)
-from pathlib import Path as _Path
 OUTPUT_DIR = _Path.home() / "Documents" / "Epstein"  # ~/Documents/Epstein on all platforms
 LOGS_DIR = _Path.cwd() / "logs"  # logs directory in current working directory
 METADATA_FILE = "metadata.json"

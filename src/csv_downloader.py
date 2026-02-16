@@ -46,6 +46,8 @@ class CSVDownloader:
             download_files: Whether to download files
         """
         self.csv_path = Path(csv_path)
+        if not self.csv_path.exists():
+            raise FileNotFoundError(f"CSV file not found: {csv_path}")
         self.download_files = download_files
 
         # Setup directories
@@ -68,22 +70,37 @@ class CSVDownloader:
         self.files_by_dataset: Dict[int, List[Dict]] = {}
         self.metadata: Dict[str, List[Dict]] = {}
 
-    def _setup_logging(self):
+    def _setup_logging(self) -> None:
         """Configure logging."""
         log_file = self.logs_dir / f"csv_downloader_{time.strftime('%Y%m%d_%H%M%S')}.log"
-
-        logging.basicConfig(
-            level=logging.INFO,
-            format="%(asctime)s [%(levelname)s] %(message)s",
-            handlers=[
-                logging.FileHandler(log_file),
-                logging.StreamHandler(sys.stdout)
-            ]
-        )
+        
+        # Get or create logger
         self.logger = logging.getLogger(__name__)
+        
+        # Only configure if not already configured
+        if not self.logger.handlers:
+            self.logger.setLevel(logging.INFO)
+            
+            # File handler
+            file_handler = logging.FileHandler(log_file)
+            file_handler.setLevel(logging.INFO)
+            
+            # Console handler
+            console_handler = logging.StreamHandler(sys.stdout)
+            console_handler.setLevel(logging.INFO)
+            
+            # Formatter
+            formatter = logging.Formatter("%(asctime)s [%(levelname)s] %(message)s")
+            file_handler.setFormatter(formatter)
+            console_handler.setFormatter(formatter)
+            
+            # Add handlers
+            self.logger.addHandler(file_handler)
+            self.logger.addHandler(console_handler)
+        
         self.logger.info(f"Logging to {log_file}")
 
-    def load_csv(self):
+    def load_csv(self) -> bool:
         """Load a CSV file and organize files by data set.
         
         This function reads a CSV file specified by `self.csv_path`, processes each row
@@ -173,8 +190,6 @@ class CSVDownloader:
         the download, it cleans up by removing  any partially downloaded file.
         """
         category_dir = data_set_dir / file_info['category']
-        category_dir.mkdir(exist_ok=True, parents=True)
-
         file_path = category_dir / file_info['filename']
 
         # Skip if exists
@@ -184,6 +199,13 @@ class CSVDownloader:
 
         # Download
         try:
+            # Create directory with error handling
+            try:
+                category_dir.mkdir(exist_ok=True, parents=True)
+            except OSError as e:
+                self.logger.error(f"Failed to create directory {category_dir}: {e}")
+                return False
+            
             time.sleep(config.RATE_LIMIT_DELAY)
             response = self.session.get(file_info['url'], timeout=config.REQUEST_TIMEOUT, stream=True)
             response.raise_for_status()
@@ -200,13 +222,23 @@ class CSVDownloader:
             self.logger.debug(f"Downloaded: {file_info['filename']} ({file_info['file_size_mb']} MB)")
             return True
 
+        except requests.exceptions.RequestException as e:
+            self.logger.error(f"Network error downloading {file_info['filename']}: {e}")
+            if file_path.exists():
+                file_path.unlink()
+            return False
+        except (IOError, OSError, PermissionError) as e:
+            self.logger.error(f"File I/O error for {file_info['filename']}: {e}")
+            if file_path.exists():
+                file_path.unlink()
+            return False
         except Exception as e:
-            self.logger.error(f"Failed to download {file_info['filename']}: {e}")
+            self.logger.error(f"Unexpected error downloading {file_info['filename']}: {e}")
             if file_path.exists():
                 file_path.unlink()
             return False
 
-    def download_data_sets(self, data_set_numbers: List[int]):
+    def download_data_sets(self, data_set_numbers: List[int]) -> None:
         """Download selected data sets.
         
         This function iterates over the provided data_set_numbers, checking if each
@@ -233,7 +265,11 @@ class CSVDownloader:
 
             # Download files
             data_set_dir = self.output_dir / f"data_set_{ds_num}"
-            data_set_dir.mkdir(exist_ok=True, parents=True)
+            try:
+                data_set_dir.mkdir(exist_ok=True, parents=True)
+            except OSError as e:
+                self.logger.error(f"Failed to create directory for Data Set {ds_num}: {e}")
+                continue
 
             success_count = 0
             for file_info in tqdm(files, desc=f"Data Set {ds_num}"):
@@ -243,7 +279,7 @@ class CSVDownloader:
             self.logger.info(f"Data Set {ds_num}: Downloaded {success_count}/{len(files)} files")
             self.metadata[f"data_set_{ds_num}"] = files
 
-    def save_metadata(self):
+    def save_metadata(self) -> None:
         """Save metadata to a JSON file and log the total files processed."""
         metadata_path = self.output_dir / config.METADATA_FILE
 
