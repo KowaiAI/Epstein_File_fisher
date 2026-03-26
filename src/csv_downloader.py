@@ -77,9 +77,12 @@ class CSVDownloader:
         
         # Use a per-instance logger to avoid handler reuse between instances
         logger_name = f"{__name__}.CSVDownloader.{id(self)}"
+
+        # Use a per-instance logger to avoid handler reuse between instances
+        logger_name = f"{__name__}.CSVDownloader.{id(self)}"
         self.logger = logging.getLogger(logger_name)
 
-        # Ensure deterministic logger behavior
+       # Ensure deterministic logger behavior
         self.logger.setLevel(logging.INFO)
         self.logger.propagate = False
 
@@ -101,7 +104,6 @@ class CSVDownloader:
             # Add handlers
             self.logger.addHandler(file_handler)
             self.logger.addHandler(console_handler)
-        
         self.logger.info(f"Logging to {log_file}")
 
     def load_csv(self) -> bool:
