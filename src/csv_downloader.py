@@ -75,26 +75,29 @@ class CSVDownloader:
         """Configure logging."""
         log_file = self.logs_dir / f"csv_downloader_{time.strftime('%Y%m%d_%H%M%S')}.log"
         
-        # Get or create logger
-        self.logger = logging.getLogger(__name__)
-        
-        # Only configure if not already configured
+        # Use a per-instance logger to avoid handler reuse between instances
+        logger_name = f"{__name__}.CSVDownloader.{id(self)}"
+        self.logger = logging.getLogger(logger_name)
+
+        # Ensure deterministic logger behavior
+        self.logger.setLevel(logging.INFO)
+        self.logger.propagate = False
+
+        # Only configure handlers if not already configured for this instance logger
         if not self.logger.handlers:
-            self.logger.setLevel(logging.INFO)
-            
             # File handler
             file_handler = logging.FileHandler(log_file)
             file_handler.setLevel(logging.INFO)
-            
+
             # Console handler
             console_handler = logging.StreamHandler(sys.stdout)
             console_handler.setLevel(logging.INFO)
-            
+
             # Formatter
             formatter = logging.Formatter("%(asctime)s [%(levelname)s] %(message)s")
             file_handler.setFormatter(formatter)
             console_handler.setFormatter(formatter)
-            
+
             # Add handlers
             self.logger.addHandler(file_handler)
             self.logger.addHandler(console_handler)
@@ -225,18 +228,30 @@ class CSVDownloader:
 
         except requests.exceptions.RequestException as e:
             self.logger.error(f"Network error downloading {file_info['filename']}: {e}")
-            if file_path.exists():
-                file_path.unlink()
+            # Best-effort cleanup - wrap unlink to avoid masking the original error
+            try:
+                if file_path.exists():
+                    file_path.unlink()
+            except Exception:
+                pass
             return False
         except (IOError, OSError, PermissionError) as e:
             self.logger.error(f"File I/O error for {file_info['filename']}: {e}")
-            if file_path.exists():
-                file_path.unlink()
+            # Best-effort cleanup - wrap unlink to avoid masking the original error
+            try:
+                if file_path.exists():
+                    file_path.unlink()
+            except Exception:
+                pass
             return False
         except Exception as e:
             self.logger.error(f"Unexpected error downloading {file_info['filename']}: {e}")
-            if file_path.exists():
-                file_path.unlink()
+            # Best-effort cleanup - wrap unlink to avoid masking the original error
+            try:
+                if file_path.exists():
+                    file_path.unlink()
+            except Exception:
+                pass
             return False
 
     def download_data_sets(self, data_set_numbers: List[int]) -> None:

@@ -360,19 +360,19 @@ class DOJEpsteinScraper:
             self.logger.debug(f"Already exists: {doc['filename']}")
             return True
 
+        # Create directory before making HTTP request to avoid connection leaks
+        try:
+            category_dir.mkdir(exist_ok=True, parents=True)
+        except OSError as e:
+            self.logger.error(f"Failed to create directory {category_dir}: {e}")
+            return False
+
         response = self._make_request(doc["url"], stream=True)
         if not response:
             self.logger.error(f"Failed to download {doc['filename']}: request failed")
             return False
 
         try:
-            # Create directory with error handling
-            try:
-                category_dir.mkdir(exist_ok=True, parents=True)
-            except OSError as e:
-                self.logger.error(f"Failed to create directory {category_dir}: {e}")
-                return False
-            
             # Get file size if available (validate header value)
             try:
                 total_size = int(response.headers.get('content-length', 0))
@@ -397,13 +397,21 @@ class DOJEpsteinScraper:
 
         except (IOError, OSError, PermissionError) as e:
             self.logger.error(f"File I/O error for {doc['filename']}: {e}")
-            if file_path.exists():
-                file_path.unlink()
+            # Best-effort cleanup - wrap unlink to avoid masking the original error
+            try:
+                if file_path.exists():
+                    file_path.unlink()
+            except Exception:
+                pass
             return False
         except Exception as e:
             self.logger.error(f"Unexpected error downloading {doc['filename']}: {e}")
-            if file_path.exists():
-                file_path.unlink()
+            # Best-effort cleanup - wrap unlink to avoid masking the original error
+            try:
+                if file_path.exists():
+                    file_path.unlink()
+            except Exception:
+                pass
             return False
 
     def run(self) -> None:
