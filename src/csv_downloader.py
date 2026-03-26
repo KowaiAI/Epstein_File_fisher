@@ -47,7 +47,8 @@ class CSVDownloader:
         """
         self.csv_path = Path(csv_path)
         if not self.csv_path.exists():
-            raise FileNotFoundError(f"CSV file not found: {csv_path}")
+            sys.stderr.write(f"ERROR: CSV file not found: {csv_path}\n")
+            sys.exit(1)
         self.download_files = download_files
 
         # Setup directories
