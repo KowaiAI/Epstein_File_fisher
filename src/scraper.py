@@ -92,19 +92,44 @@ class DOJEpsteinScraper:
         # Metadata storage
         self.metadata: Dict[str, List[Dict]] = {}
 
-    def _setup_logging(self):
+    def _setup_logging(self) -> None:
         """Configure logging to file and console."""
         log_file = self.logs_dir / f"scraper_{time.strftime('%Y%m%d_%H%M%S')}.log"
 
-        logging.basicConfig(
-            level=logging.INFO,
-            format="%(asctime)s [%(levelname)s] %(message)s",
-            handlers=[
-                logging.FileHandler(log_file),
-                logging.StreamHandler(sys.stdout)
-            ]
-        )
-        self.logger = logging.getLogger(__name__)
+        # Use a per-instance logger to avoid handler/log_file mismatches
+        logger_name = f"{__name__}.{self.__class__.__name__}.{id(self)}"
+        self.logger = logging.getLogger(logger_name)
+
+        # Ensure consistent logger configuration for this instance
+        self.logger.setLevel(logging.INFO)
+        self.logger.propagate = False
+
+        # Remove any existing handlers so we always log to the current log_file
+        if self.logger.handlers:
+            for handler in list(self.logger.handlers):
+                self.logger.removeHandler(handler)
+                try:
+                    handler.close()
+                except Exception:
+                    # Best-effort close; ignore errors during cleanup
+                    pass
+
+        # File handler
+        file_handler = logging.FileHandler(log_file)
+        file_handler.setLevel(logging.INFO)
+
+        # Console handler
+        console_handler = logging.StreamHandler(sys.stdout)
+        console_handler.setLevel(logging.INFO)
+
+        # Formatter
+        formatter = logging.Formatter("%(asctime)s [%(levelname)s] %(message)s")
+        file_handler.setFormatter(formatter)
+        console_handler.setFormatter(formatter)
+
+        # Add handlers
+        self.logger.addHandler(file_handler)
+        self.logger.addHandler(console_handler)
         self.logger.info(f"Logging to {log_file}")
 
     def _make_request(self, url: str, stream: bool = False) -> Optional[requests.Response]:
@@ -164,7 +189,6 @@ class DOJEpsteinScraper:
         return data_set_urls
 
     def get_pagination_info(self, soup: BeautifulSoup) -> int:
-        # Look for pagination nav
         """Extract total number of pages from pagination controls.
         
         This function analyzes the pagination navigation in a BeautifulSoup object  to
@@ -314,7 +338,6 @@ class DOJEpsteinScraper:
         return all_documents
 
     def download_file(self, doc: Dict, data_set_dir: Path) -> bool:
-        # Create category subdirectory
         """Download a file (any supported type).
         
         This function creates a category subdirectory within the specified data_set_dir
@@ -330,14 +353,19 @@ class DOJEpsteinScraper:
             data_set_dir: Directory to save the file.
         """
         category_dir = data_set_dir / doc["category"]
-        category_dir.mkdir(exist_ok=True, parents=True)
-
         file_path = category_dir / doc["filename"]
 
         # Skip if already downloaded
         if file_path.exists():
             self.logger.debug(f"Already exists: {doc['filename']}")
             return True
+
+        # Create directory before making HTTP request to avoid connection leaks
+        try:
+            category_dir.mkdir(exist_ok=True, parents=True)
+        except OSError as e:
+            self.logger.error(f"Failed to create directory {category_dir}: {e}")
+            return False
 
         response = self._make_request(doc["url"], stream=True)
         if not response:
@@ -367,13 +395,26 @@ class DOJEpsteinScraper:
 
             return True
 
+        except (IOError, OSError, PermissionError) as e:
+            self.logger.error(f"File I/O error for {doc['filename']}: {e}")
+            # Best-effort cleanup - wrap unlink to avoid masking the original error
+            try:
+                if file_path.exists():
+                    file_path.unlink()
+            except Exception:
+                pass
+            return False
         except Exception as e:
-            self.logger.error(f"Failed to save {doc['filename']}: {e}")
-            if file_path.exists():
-                file_path.unlink()
+            self.logger.error(f"Unexpected error downloading {doc['filename']}: {e}")
+            # Best-effort cleanup - wrap unlink to avoid masking the original error
+            try:
+                if file_path.exists():
+                    file_path.unlink()
+            except Exception:
+                pass
             return False
 
-    def run(self):
+    def run(self) -> None:
         """Run the complete scraping process.
         
         This method initiates the scraping process for the DOJ Epstein Disclosures. It
@@ -405,7 +446,11 @@ class DOJEpsteinScraper:
             # Download files if enabled
             if self.download_files and documents:
                 data_set_dir = self.output_dir / f"data_set_{data_set_num}"
-                data_set_dir.mkdir(exist_ok=True, parents=True)
+                try:
+                    data_set_dir.mkdir(exist_ok=True, parents=True)
+                except OSError as e:
+                    self.logger.error(f"Failed to create directory for Data Set {data_set_num}: {e}")
+                    continue
 
                 self.logger.info(f"Downloading files for Data Set {data_set_num}")
                 download_success_count = 0
@@ -430,7 +475,7 @@ class DOJEpsteinScraper:
         self._save_metadata()
         self.logger.info("Scraping complete!")
 
-    def _save_metadata(self):
+    def _save_metadata(self) -> None:
         """Save collected metadata to JSON file."""
         metadata_path = self.output_dir / config.METADATA_FILE
 

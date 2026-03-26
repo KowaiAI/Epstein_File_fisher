@@ -53,7 +53,13 @@ All tests pass successfully:
 - ✅ test_csv_downloader.py - 6 tests
 - ✅ test_scraper.py - 4 tests
 
-**Total: 17 tests passing**
+**Total: 21 tests passing**
+
+Test breakdown:
+- test_config.py - 7 tests
+- test_csv_downloader.py - 6 tests  
+- test_integration.py - 4 tests
+- test_scraper.py - 4 tests
 
 ## Code Quality Checks
 
