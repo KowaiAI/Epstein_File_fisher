@@ -95,31 +95,41 @@ class DOJEpsteinScraper:
     def _setup_logging(self) -> None:
         """Configure logging to file and console."""
         log_file = self.logs_dir / f"scraper_{time.strftime('%Y%m%d_%H%M%S')}.log"
-        
-        # Get or create logger
-        self.logger = logging.getLogger(__name__)
-        
-        # Only configure if not already configured
-        if not self.logger.handlers:
-            self.logger.setLevel(logging.INFO)
-            
-            # File handler
-            file_handler = logging.FileHandler(log_file)
-            file_handler.setLevel(logging.INFO)
-            
-            # Console handler
-            console_handler = logging.StreamHandler(sys.stdout)
-            console_handler.setLevel(logging.INFO)
-            
-            # Formatter
-            formatter = logging.Formatter("%(asctime)s [%(levelname)s] %(message)s")
-            file_handler.setFormatter(formatter)
-            console_handler.setFormatter(formatter)
-            
-            # Add handlers
-            self.logger.addHandler(file_handler)
-            self.logger.addHandler(console_handler)
-        
+
+        # Use a per-instance logger to avoid handler/log_file mismatches
+        logger_name = f"{__name__}.{self.__class__.__name__}.{id(self)}"
+        self.logger = logging.getLogger(logger_name)
+
+        # Ensure consistent logger configuration for this instance
+        self.logger.setLevel(logging.INFO)
+        self.logger.propagate = False
+
+        # Remove any existing handlers so we always log to the current log_file
+        if self.logger.handlers:
+            for handler in list(self.logger.handlers):
+                self.logger.removeHandler(handler)
+                try:
+                    handler.close()
+                except Exception:
+                    # Best-effort close; ignore errors during cleanup
+                    pass
+
+        # File handler
+        file_handler = logging.FileHandler(log_file)
+        file_handler.setLevel(logging.INFO)
+
+        # Console handler
+        console_handler = logging.StreamHandler(sys.stdout)
+        console_handler.setLevel(logging.INFO)
+
+        # Formatter
+        formatter = logging.Formatter("%(asctime)s [%(levelname)s] %(message)s")
+        file_handler.setFormatter(formatter)
+        console_handler.setFormatter(formatter)
+
+        # Add handlers
+        self.logger.addHandler(file_handler)
+        self.logger.addHandler(console_handler)
         self.logger.info(f"Logging to {log_file}")
 
     def _make_request(self, url: str, stream: bool = False) -> Optional[requests.Response]:
