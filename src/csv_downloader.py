@@ -72,7 +72,7 @@ class CSVDownloader:
         self.metadata: Dict[str, List[Dict]] = {}
 
     def _setup_logging(self) -> None:
-        """Configure logging."""
+        """Configure logging for the CSVDownloader instance."""
         log_file = self.logs_dir / f"csv_downloader_{time.strftime('%Y%m%d_%H%M%S')}.log"
         
         # Use a per-instance logger to avoid handler reuse between instances
@@ -110,10 +110,11 @@ class CSVDownloader:
         """Load a CSV file and organize files by data set.
         
         This function reads a CSV file specified by `self.csv_path`, processes each row
-        to extract file information, and categorizes files based on their extensions.
-        It handles potential errors in row data and logs the number of files loaded
-        across different data sets. If the CSV file does not exist or an error occurs
-        during processing, appropriate error messages are logged.
+        to extract file information,  and categorizes files based on their extensions.
+        It validates the presence of required columns, handles potential  errors in row
+        data, and logs the number of files loaded across different data sets. If the
+        CSV file does not  exist or an error occurs during processing, appropriate
+        error messages are logged.
         
         Returns:
             bool: True if the CSV was loaded successfully, False otherwise.
@@ -257,17 +258,16 @@ class CSVDownloader:
             return False
 
     def download_data_sets(self, data_set_numbers: List[int]) -> None:
-        """Download selected data sets.
-        
-        This function iterates over the provided data_set_numbers, checking if each
-        data set exists in self.files_by_dataset. If a data set is found, it logs the
-        download process and either collects metadata or downloads the files to a
-        specified directory. The function also handles the creation of necessary
-        directories and logs the success of each download operation.
+        """def download_data_sets(self, data_set_numbers: List[int]) -> None:
+        Download selected data sets.  This function iterates over the provided
+        data_set_numbers, checking if each data set exists in self.files_by_dataset. If
+        a data set is found, it logs the download process and either collects metadata
+        or downloads the files to a specified directory. The function also handles the
+        creation of necessary directories and logs the success of each download
+        operation.
         
         Args:
-            data_set_numbers: A list of integers representing the data set numbers to download.
-        """
+            data_set_numbers: A list of integers representing the data set numbers to download."""
         for ds_num in sorted(data_set_numbers):
             if ds_num not in self.files_by_dataset:
                 self.logger.warning(f"Data Set {ds_num} not found in CSV")
