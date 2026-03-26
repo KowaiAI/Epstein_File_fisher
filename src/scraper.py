@@ -338,7 +338,7 @@ class DOJEpsteinScraper:
         return all_documents
 
     def download_file(self, doc: Dict, data_set_dir: Path) -> bool:
-        """Download a file (any supported type).
+        """Download a file from a specified URL and save it to a designated directory.
         
         This function creates a category subdirectory within the specified data_set_dir
         to store the downloaded file. It checks if the file already exists to avoid
@@ -348,9 +348,11 @@ class DOJEpsteinScraper:
         the file size.
         
         Args:
-            doc: Document metadata dictionary containing 'category',
-                'filename', and 'url'.
-            data_set_dir: Directory to save the file.
+            doc (Dict): Document metadata dictionary containing 'category', 'filename', and 'url'.
+            data_set_dir (Path): Directory to save the file.
+        
+        Returns:
+            bool: True if the file was downloaded successfully, False otherwise.
         """
         category_dir = data_set_dir / doc["category"]
         file_path = category_dir / doc["filename"]
@@ -415,13 +417,13 @@ class DOJEpsteinScraper:
             return False
 
     def run(self) -> None:
-        """Run the complete scraping process.
+        """Run the complete scraping process for the DOJ Epstein Disclosures.
         
-        This method initiates the scraping process for the DOJ Epstein Disclosures. It
-        retrieves all relevant data set URLs and iterates through the selected data
-        sets, scraping metadata and downloading files if enabled. The function also
-        logs the progress and any issues encountered during the process, including
-        missing data sets and the types of files found.
+        This method initiates the scraping process by retrieving all relevant data set
+        URLs. It iterates through the selected data sets, scraping metadata and
+        downloading files if enabled. The function also logs the progress and any
+        issues encountered during the process, including missing data sets and the
+        types of files found.
         """
         self.logger.info("Starting DOJ Epstein Disclosures scraper")
 
