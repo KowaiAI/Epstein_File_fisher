@@ -15,7 +15,7 @@ import config
 
 
 def test_end_to_end_csv_workflow():
-    """Test complete CSV download workflow without actually downloading files."""
+    """Test the complete CSV download workflow without actual downloads."""
     print("Testing end-to-end CSV workflow...")
     
     # Create a test CSV
@@ -97,7 +97,15 @@ def test_config_consistency():
 
 
 def test_file_organization():
-    """Test that file organization logic works correctly."""
+    """Test the correctness of file organization logic.
+    
+    This function tests the categorization of various file types into their
+    respective categories such as documents, videos, audio, images, and  archives.
+    It uses a predefined dictionary of test files and their  expected categories,
+    and asserts that the determined category matches  the expected one based on the
+    file extension. The logic for categorization  is consistent with the
+    implementation found in csv_downloader.py.
+    """
     print("Testing file organization...")
     
     test_files = {
